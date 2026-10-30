@@ -5,6 +5,7 @@ import { decodeCatalog, facetValues, filtersFromParams, filtersToParams, search,
 const config: NicheConfig = {
   niche: 'test',
   app: 'test',
+  idPrefix: 'x',
   attributes: [
     { key: 'maker', type: 'text', searchable: true, facet: 'select' },
     { key: 'kind', type: 'enum', enumValues: ['a', 'b'], facet: 'chips' },

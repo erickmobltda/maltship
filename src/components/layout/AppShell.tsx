@@ -33,7 +33,7 @@ export function AppShell() {
       <div className="pointer-events-none fixed left-[-15%] top-[-15%] h-[45%] w-[55%] rounded-full bg-secondary/15 blur-[120px]" />
       <div className="pointer-events-none fixed bottom-[-20%] right-[-10%] h-[45%] w-[50%] rounded-full bg-primary/10 blur-[140px]" />
 
-      <aside className="z-20 hidden w-60 shrink-0 border-r bg-card/40 backdrop-blur-2xl md:flex md:flex-col">
+      <aside className="z-20 hidden w-60 shrink-0 border-r bg-card/40 backdrop-blur-2xl md:sticky md:top-0 md:flex md:h-dvh md:flex-col">
         <div className="flex h-16 items-center gap-2 px-5 font-display text-xl font-semibold">
           <Logo />
           {brand}

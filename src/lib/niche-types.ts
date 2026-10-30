@@ -24,6 +24,8 @@ export interface OwnedExtraDef {
 export interface NicheConfig {
   niche: string;
   app: string;
+  /** Catalog ids are <idPrefix><n> (scripts/build_catalog.py). */
+  idPrefix: string;
   attributes: AttributeDef[];
   scores?: { min: number; max: number; filterSteps: number[] };
   ratingTags: string[];

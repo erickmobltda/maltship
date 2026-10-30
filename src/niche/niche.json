@@ -1,6 +1,7 @@
 {
   "niche": "whisky",
   "app": "whisky",
+  "idPrefix": "k",
   "attributes": [
     {
       "key": "distillery",

@@ -17,7 +17,7 @@ NICHE = json.loads((ROOT / "src/niche/niche.json").read_text())
 SOURCE = ROOT / "data/sample.json"
 IDS = ROOT / "data/ids.json"
 OUT = ROOT / "public/catalog.json"
-PREFIX = {"whisky": "k", "watches": "t"}.get(NICHE["niche"], NICHE["niche"][0])
+PREFIX = NICHE["idPrefix"]
 
 
 def normalize(attr, value):
