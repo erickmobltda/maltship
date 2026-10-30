@@ -2,7 +2,7 @@
 
 > Discover, rate and collect whisky. Built from the [collector-app-blueprint](https://github.com/erickmobltda/collector-app-blueprint).
 
-**Live:** <https://maltship.erickmob.dev> · **Core version:** `CORE_VERSION 1` (same core as [Watcheship](https://github.com/erickmobltda/watcheship))
+**Live:** <https://maltship.erickmob.dev> · **Core:** shared with [Watcheship](https://github.com/erickmobltda/watcheship) and every other [product](https://github.com/erickmobltda/collector-app-blueprint/blob/main/PRODUCTS.md); version in `CORE_VERSION`
 
 ## Features
 
@@ -41,9 +41,9 @@
 
 ## Core vs niche
 
-The app splits into a generic core and a niche layer:
-- **Niche:** everything whisky-specific lives in `src/niche/` (`niche.json`, `Logo`, `Placeholder`, `theme.css`), plus `src/locales/*/niche.json`, `data/` and `scripts/demo-seed.json`.
-- **Core:** everything else is the core, which is identical to Watcheship's. When you change the core, port the change to the other app and bump `CORE_VERSION` in both READMEs.
+The app splits into the shared core and a niche layer:
+- **Niche** (edit here, with a normal PR): `src/niche/` (`niche.json`, `Logo`, `Placeholder`, `theme.css`), `src/locales/*/niche.json`, `data/`, `public/`, `scripts/demo-seed.json`, `index.html`, this README and the CHANGELOG.
+- **Core** (everything else): it lives in [collector-app-blueprint/core](https://github.com/erickmobltda/collector-app-blueprint/tree/main/core) and arrives here as a `Core v<N>` PR. Don't edit core files in this repo: CI runs `scripts/check-core.mjs` and fails. To change the core, follow the blueprint's [docs/10](https://github.com/erickmobltda/collector-app-blueprint/blob/main/docs/10-core-sync.md).
 
 ## Renaming the brand
 
