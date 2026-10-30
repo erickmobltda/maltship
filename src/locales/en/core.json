@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "feed": "Feed",
+    "profile": "Profile"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong. Try again.",
+    "clear": "Clear",
+    "back": "Back",
+    "delete": "Delete",
+    "save": "Save",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "age": {
+    "yes": "Yes, I am 18+",
+    "no": "No"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "inviteOnly": "Accounts are invite-only.",
+    "email": "Email",
+    "password": "Password",
+    "error": "Wrong email or password.",
+    "demoButton": "Try the demo",
+    "demoHint": "A shared sandbox account. Its data is reset now and then."
+  },
+  "setup": {
+    "title": "Create your profile",
+    "subtitle": "Pick a handle and a name. Others see them next to your ratings.",
+    "handle": "Handle",
+    "handleHint": "3–20 characters: a–z, 0–9 and _. It can't be changed later.",
+    "taken": "This handle is taken.",
+    "error": "Couldn't create the profile. The handle may have just been taken.",
+    "save": "Create profile"
+  },
+  "discover": {
+    "title": "Discover",
+    "search": "Search the catalog",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "empty": "Nothing matches these filters.",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "more": "Show more"
+  },
+  "item": {
+    "notFound": "This item isn't in the catalog.",
+    "community_one": "{{avg}} · {{count}} rating",
+    "community_other": "{{avg}} · {{count}} ratings",
+    "editRating": "Edit my rating",
+    "rate": "Rate",
+    "wished": "On my wishlist",
+    "wish": "Wish it",
+    "less": "One less",
+    "more": "One more",
+    "specs": "Details",
+    "allScores": "All scores: {{scores}}",
+    "ratings": "Ratings",
+    "signInToSee": "to see the ratings.",
+    "noRatings": "No ratings yet. Be the first.",
+    "unwishTitle": "Remove from your wishlist?",
+    "unwishBody": "You own it now.",
+    "gone": "This item is no longer in the catalog."
+  },
+  "rate": {
+    "title": "Your rating",
+    "tapStars": "Tap a star; tap again for a half",
+    "tags": "Notes (up to {{max}})",
+    "notes": "Comments",
+    "notesPlaceholder": "What stood out?",
+    "public": "Your rating is public: it shows in the feed, on the item and on your profile.",
+    "saved": "Rating saved."
+  },
+  "rating": {
+    "like": "Like",
+    "unlike": "Unlike"
+  },
+  "collection": {
+    "showWishlist": "Show my wishlist on my profile",
+    "wishlist": "Wishlist",
+    "rated": "Rated",
+    "since": "since {{date}}",
+    "wishlistEmpty": "Your wishlist is empty.",
+    "ratedEmpty": "You haven't rated anything yet."
+  },
+  "feed": {
+    "title": "Feed",
+    "following": "Following",
+    "everyone": "Everyone",
+    "followingEmpty": "Follow people to see their ratings here.",
+    "empty": "No ratings yet.",
+    "tooMany": "You follow a lot of people: showing the most recent ratings from everyone instead."
+  },
+  "people": {
+    "title": "Find people",
+    "placeholder": "Name, or @handle",
+    "empty": "Nobody found.",
+    "hint": "Type a name, or @ and a handle."
+  },
+  "profile": {
+    "followers": "followers",
+    "following": "following",
+    "follow": "Follow",
+    "unfollow": "Following",
+    "ratings": "Ratings",
+    "nothingHere": "Nothing here yet.",
+    "notFound": "Profile not found.",
+    "noRatings": "No ratings yet."
+  },
+  "settings": {
+    "title": "Settings",
+    "displayName": "Display name",
+    "bio": "Bio",
+    "saved": "Profile saved.",
+    "privacy": "Privacy",
+    "ratingsPublic": "Ratings are always public to signed-in users.",
+    "language": "Language",
+    "signOut": "Sign out"
+  },
+  "demo": {
+    "socialDisabled": "Demo account: social features (profiles, follows, likes, the shared feed) are turned off. Your collection and ratings stay private to this account.",
+    "name": "Demo",
+    "collectionNote": "Demo data is reset now and then."
+  },
+  "unit": {
+    "years": "{{value}} years",
+    "percent": "{{value}}%",
+    "mm": "{{value}} mm",
+    "m": "{{value}} m"
+  }
+}

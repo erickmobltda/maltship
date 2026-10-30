@@ -1,0 +1,83 @@
+{
+  "brand": {
+    "name": "Maltship",
+    "tagline": "Discover, rate and collect whisky."
+  },
+  "age": {
+    "question": "This app is about alcoholic drinks. Are you of legal drinking age (18+)?",
+    "refused": "Sorry, Maltship is only for adults.",
+    "warning": "Drink responsibly."
+  },
+  "owned": {
+    "title": "Shelf",
+    "subtitle": "The bottles you own, the ones you want, and what you've tasted.",
+    "add": "Add to shelf",
+    "remove": "Remove from shelf",
+    "inList_one": "{{count}} bottle",
+    "inList_other": "{{count}} bottles",
+    "showOnProfile": "Show my shelf on my profile",
+    "empty": "Your shelf is empty.",
+    "hiddenNote": "Your shelf is hidden from others. Turn it on in Shelf or Settings."
+  },
+  "attr": {
+    "distillery": "Distillery",
+    "brand": "Brand",
+    "country": "Country",
+    "region": "Region",
+    "style": "Style",
+    "age": "Age",
+    "abv": "ABV",
+    "cask": "Cask"
+  },
+  "enum": {
+    "style": {
+      "single_malt": "Single malt",
+      "blended_malt": "Blended malt",
+      "blend": "Blend",
+      "bourbon": "Bourbon",
+      "rye": "Rye",
+      "single_pot_still": "Single pot still",
+      "other": "Other"
+    }
+  },
+  "zero": {
+    "age": "No age statement"
+  },
+  "tag": {
+    "peat": "Peat",
+    "smoke": "Smoke",
+    "vanilla": "Vanilla",
+    "caramel": "Caramel",
+    "honey": "Honey",
+    "dried_fruit": "Dried fruit",
+    "citrus": "Citrus",
+    "apple": "Apple",
+    "floral": "Floral",
+    "spice": "Spice",
+    "oak": "Oak",
+    "sherry": "Sherry",
+    "chocolate": "Chocolate",
+    "nutty": "Nutty",
+    "salty": "Salty",
+    "medicinal": "Medicinal",
+    "smooth": "Smooth",
+    "long_finish": "Long finish"
+  },
+  "extra": {
+    "status": {
+      "label": "Bottle",
+      "sealed": "Sealed",
+      "open": "Open"
+    }
+  },
+  "experiencedOn": "Tasted on",
+  "discover": {
+    "subtitle_one": "{{count}} whisky in the catalog",
+    "subtitle_other": "{{count}} whiskies in the catalog",
+    "placeholder": "Search by name, distillery, region, cask…"
+  },
+  "feed": {
+    "subtitle": "What people are tasting."
+  },
+  "credits": "Sample catalog for testing: real brands, illustrative specs. Maltship is part of erickmob.dev."
+}

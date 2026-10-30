@@ -1,0 +1,33 @@
+@import './niche/theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply min-h-full;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 {
+    @apply font-display tracking-tight;
+  }
+
+  .pb-safe { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+  .pt-safe { padding-top: max(0.75rem, env(safe-area-inset-top)); }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}

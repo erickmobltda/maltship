@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "discover": "Descobrir",
+    "feed": "Feed",
+    "profile": "Perfil"
+  },
+  "common": {
+    "loading": "Carregando…",
+    "error": "Algo deu errado. Tente de novo.",
+    "clear": "Limpar",
+    "back": "Voltar",
+    "delete": "Apagar",
+    "save": "Salvar",
+    "yes": "Sim",
+    "no": "Não"
+  },
+  "age": {
+    "yes": "Sim, tenho 18+",
+    "no": "Não"
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "inviteOnly": "Contas só por convite.",
+    "email": "E-mail",
+    "password": "Senha",
+    "error": "E-mail ou senha incorretos.",
+    "demoButton": "Testar a demo",
+    "demoHint": "Uma conta de teste compartilhada. Os dados dela são restaurados de vez em quando."
+  },
+  "setup": {
+    "title": "Crie seu perfil",
+    "subtitle": "Escolha um @ e um nome. Eles aparecem junto das suas avaliações.",
+    "handle": "@ (identificador)",
+    "handleHint": "3–20 caracteres: a–z, 0–9 e _. Não dá para trocar depois.",
+    "taken": "Esse @ já está em uso.",
+    "error": "Não deu para criar o perfil. Talvez o @ tenha acabado de ser usado.",
+    "save": "Criar perfil"
+  },
+  "discover": {
+    "title": "Descobrir",
+    "search": "Buscar no catálogo",
+    "filters": "Filtros",
+    "clearFilters": "Limpar filtros",
+    "empty": "Nada combina com esses filtros.",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "more": "Mostrar mais"
+  },
+  "item": {
+    "notFound": "Este item não está no catálogo.",
+    "community_one": "{{avg}} · {{count}} avaliação",
+    "community_other": "{{avg}} · {{count}} avaliações",
+    "editRating": "Editar minha avaliação",
+    "rate": "Avaliar",
+    "wished": "Na minha lista de desejos",
+    "wish": "Quero",
+    "less": "Um a menos",
+    "more": "Um a mais",
+    "specs": "Detalhes",
+    "allScores": "Todas as notas: {{scores}}",
+    "ratings": "Avaliações",
+    "signInToSee": "para ver as avaliações.",
+    "noRatings": "Nenhuma avaliação ainda. Seja o primeiro.",
+    "unwishTitle": "Tirar da lista de desejos?",
+    "unwishBody": "Agora você já tem.",
+    "gone": "Este item não está mais no catálogo."
+  },
+  "rate": {
+    "title": "Sua avaliação",
+    "tapStars": "Toque numa estrela; toque de novo para meia",
+    "tags": "Notas (até {{max}})",
+    "notes": "Comentários",
+    "notesPlaceholder": "O que chamou a atenção?",
+    "public": "Sua avaliação é pública: aparece no feed, no item e no seu perfil.",
+    "saved": "Avaliação salva."
+  },
+  "rating": {
+    "like": "Curtir",
+    "unlike": "Descurtir"
+  },
+  "collection": {
+    "showWishlist": "Mostrar minha lista de desejos no perfil",
+    "wishlist": "Desejos",
+    "rated": "Avaliados",
+    "since": "desde {{date}}",
+    "wishlistEmpty": "Sua lista de desejos está vazia.",
+    "ratedEmpty": "Você ainda não avaliou nada."
+  },
+  "feed": {
+    "title": "Feed",
+    "following": "Seguindo",
+    "everyone": "Todos",
+    "followingEmpty": "Siga pessoas para ver as avaliações delas aqui.",
+    "empty": "Nenhuma avaliação ainda.",
+    "tooMany": "Você segue muita gente: mostrando as avaliações mais recentes de todos."
+  },
+  "people": {
+    "title": "Encontrar pessoas",
+    "placeholder": "Nome, ou @identificador",
+    "empty": "Ninguém encontrado.",
+    "hint": "Digite um nome, ou @ e o identificador."
+  },
+  "profile": {
+    "followers": "seguidores",
+    "following": "seguindo",
+    "follow": "Seguir",
+    "unfollow": "Seguindo",
+    "ratings": "Avaliações",
+    "nothingHere": "Nada aqui ainda.",
+    "notFound": "Perfil não encontrado.",
+    "noRatings": "Nenhuma avaliação ainda."
+  },
+  "settings": {
+    "title": "Configurações",
+    "displayName": "Nome de exibição",
+    "bio": "Bio",
+    "saved": "Perfil salvo.",
+    "privacy": "Privacidade",
+    "ratingsPublic": "Avaliações são sempre públicas para quem está logado.",
+    "language": "Idioma",
+    "signOut": "Sair"
+  },
+  "demo": {
+    "socialDisabled": "Conta demo: os recursos sociais (perfis, seguir, curtidas, o feed compartilhado) estão desligados. Sua coleção e suas avaliações ficam só nesta conta.",
+    "name": "Demo",
+    "collectionNote": "Os dados da demo são restaurados de vez em quando."
+  },
+  "unit": {
+    "years": "{{value}} anos",
+    "percent": "{{value}}%",
+    "mm": "{{value}} mm",
+    "m": "{{value}} m"
+  }
+}
