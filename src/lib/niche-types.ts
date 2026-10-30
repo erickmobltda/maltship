@@ -31,5 +31,6 @@ export interface NicheConfig {
   ratingTags: string[];
   owned: { quantity: boolean; maxQuantity: number; extras?: OwnedExtraDef[] };
   ageGate: boolean;
-  image: { aspect: string; base?: string };
+  /** `side`: thumbnail left of the text (portrait/square photos). `top`: full width above it (wide photos, e.g. cigar bands). */
+  image: { aspect: string; base?: string; layout?: 'side' | 'top' };
 }
