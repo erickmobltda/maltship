@@ -1,5 +1,5 @@
-// Restores the public demo account to the sample shelf, wishlist and ratings in
-// demo-seed.json, wiping whatever visitors changed.
+// Restores the public demo account to the sample owned items, wishlist and ratings
+// in demo-seed.json, wiping whatever visitors changed.
 //
 //   GOOGLE_APPLICATION_CREDENTIALS=/path/to/firebase-sa.json npm run reset-demo
 //
