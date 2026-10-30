@@ -1,0 +1,22 @@
+[
+  { "key": "lagavulin-16", "name": "Lagavulin 16", "distillery": "Lagavulin", "brand": "Lagavulin", "country": "Scotland", "region": "Islay", "style": "single_malt", "age": 16, "abv": 43, "cask": "Ex-bourbon" },
+  { "key": "laphroaig-10", "name": "Laphroaig 10", "distillery": "Laphroaig", "brand": "Laphroaig", "country": "Scotland", "region": "Islay", "style": "single_malt", "age": 10, "abv": 40, "cask": "Ex-bourbon" },
+  { "key": "macallan-12-double-cask", "name": "The Macallan 12 Double Cask", "distillery": "Macallan", "brand": "The Macallan", "country": "Scotland", "region": "Speyside", "style": "single_malt", "age": 12, "abv": 40, "cask": "Sherry, American and European oak" },
+  { "key": "glenfiddich-12", "name": "Glenfiddich 12", "distillery": "Glenfiddich", "brand": "Glenfiddich", "country": "Scotland", "region": "Speyside", "style": "single_malt", "age": 12, "abv": 40, "cask": "Bourbon and sherry" },
+  { "key": "talisker-10", "name": "Talisker 10", "distillery": "Talisker", "brand": "Talisker", "country": "Scotland", "region": "Islands", "style": "single_malt", "age": 10, "abv": 45.8, "cask": "Ex-bourbon" },
+  { "key": "ardbeg-10", "name": "Ardbeg Ten", "distillery": "Ardbeg", "brand": "Ardbeg", "country": "Scotland", "region": "Islay", "style": "single_malt", "age": 10, "abv": 46, "cask": "Ex-bourbon" },
+  { "key": "glenlivet-12", "name": "The Glenlivet 12", "distillery": "Glenlivet", "brand": "The Glenlivet", "country": "Scotland", "region": "Speyside", "style": "single_malt", "age": 12, "abv": 40, "cask": "American and European oak" },
+  { "key": "highland-park-12", "name": "Highland Park 12 Viking Honour", "distillery": "Highland Park", "brand": "Highland Park", "country": "Scotland", "region": "Islands", "style": "single_malt", "age": 12, "abv": 40, "cask": "Sherry-seasoned oak" },
+  { "key": "oban-14", "name": "Oban 14", "distillery": "Oban", "brand": "Oban", "country": "Scotland", "region": "Highlands", "style": "single_malt", "age": 14, "abv": 43, "cask": "Ex-bourbon" },
+  { "key": "dalmore-12", "name": "The Dalmore 12", "distillery": "Dalmore", "brand": "The Dalmore", "country": "Scotland", "region": "Highlands", "style": "single_malt", "age": 12, "abv": 40, "cask": "Bourbon, finished in sherry" },
+  { "key": "balvenie-12-doublewood", "name": "The Balvenie 12 DoubleWood", "distillery": "Balvenie", "brand": "The Balvenie", "country": "Scotland", "region": "Speyside", "style": "single_malt", "age": 12, "abv": 40, "cask": "Bourbon, finished in sherry" },
+  { "key": "springbank-10", "name": "Springbank 10", "distillery": "Springbank", "brand": "Springbank", "country": "Scotland", "region": "Campbeltown", "style": "single_malt", "age": 10, "abv": 46, "cask": "Bourbon and sherry" },
+  { "key": "bunnahabhain-12", "name": "Bunnahabhain 12", "distillery": "Bunnahabhain", "brand": "Bunnahabhain", "country": "Scotland", "region": "Islay", "style": "single_malt", "age": 12, "abv": 46.3, "cask": "Sherry and bourbon" },
+  { "key": "johnnie-walker-black", "name": "Johnnie Walker Black Label", "distillery": "Various", "brand": "Johnnie Walker", "country": "Scotland", "region": "Various", "style": "blend", "age": 12, "abv": 40, "cask": "Mixed" },
+  { "key": "buffalo-trace", "name": "Buffalo Trace", "distillery": "Buffalo Trace", "brand": "Buffalo Trace", "country": "USA", "region": "Kentucky", "style": "bourbon", "age": 0, "abv": 45, "cask": "New charred American oak" },
+  { "key": "makers-mark", "name": "Maker's Mark", "distillery": "Maker's Mark", "brand": "Maker's Mark", "country": "USA", "region": "Kentucky", "style": "bourbon", "age": 0, "abv": 45, "cask": "New charred American oak" },
+  { "key": "yamazaki-12", "name": "Yamazaki 12", "distillery": "Yamazaki", "brand": "Suntory", "country": "Japan", "region": "Osaka", "style": "single_malt", "age": 12, "abv": 43, "cask": "Mizunara, sherry and bourbon" },
+  { "key": "hibiki-harmony", "name": "Hibiki Japanese Harmony", "distillery": "Various", "brand": "Suntory", "country": "Japan", "region": "Various", "style": "blend", "age": 0, "abv": 43, "cask": "Mizunara, sherry and bourbon" },
+  { "key": "redbreast-12", "name": "Redbreast 12", "distillery": "Midleton", "brand": "Redbreast", "country": "Ireland", "region": "Cork", "style": "single_pot_still", "age": 12, "abv": 40, "cask": "Sherry and bourbon" },
+  { "key": "jameson", "name": "Jameson", "distillery": "Midleton", "brand": "Jameson", "country": "Ireland", "region": "Cork", "style": "blend", "age": 0, "abv": 40, "cask": "Bourbon and sherry" }
+]

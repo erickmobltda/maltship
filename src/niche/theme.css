@@ -1,0 +1,25 @@
+/* Maltship: amber on charcoal. The core reads only these variables (tailwind.config.ts). */
+:root, .dark {
+  --background: 28 14% 7%;
+  --foreground: 38 30% 92%;
+  --card: 28 12% 10%;
+  --card-foreground: 38 30% 92%;
+  --primary: 34 86% 52%;
+  --primary-foreground: 28 30% 8%;
+  --secondary: 22 60% 38%;
+  --secondary-foreground: 38 30% 95%;
+  --muted: 28 10% 16%;
+  --muted-foreground: 34 10% 64%;
+  --accent: 16 70% 48%;
+  --accent-foreground: 38 30% 95%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --success: 142 55% 45%;
+  --success-foreground: 0 0% 100%;
+  --border: 28 10% 18%;
+  --input: 28 10% 18%;
+  --ring: 34 86% 52%;
+  --radius: 0.85rem;
+  --font-display: 'Fraunces';
+  --font-sans: 'Inter';
+}

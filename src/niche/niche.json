@@ -1,0 +1,107 @@
+{
+  "niche": "whisky",
+  "app": "whisky",
+  "attributes": [
+    {
+      "key": "distillery",
+      "type": "text",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true,
+      "subtitle": true
+    },
+    {
+      "key": "brand",
+      "type": "text",
+      "searchable": true,
+      "showInSpecs": true
+    },
+    {
+      "key": "country",
+      "type": "text",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true,
+      "subtitle": true
+    },
+    {
+      "key": "region",
+      "type": "text",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true
+    },
+    {
+      "key": "style",
+      "type": "enum",
+      "enumValues": [
+        "single_malt",
+        "blended_malt",
+        "blend",
+        "bourbon",
+        "rye",
+        "single_pot_still",
+        "other"
+      ],
+      "facet": "chips",
+      "showInSpecs": true
+    },
+    {
+      "key": "age",
+      "type": "number",
+      "unit": "years",
+      "showInSpecs": true,
+      "zeroLabel": true
+    },
+    {
+      "key": "abv",
+      "type": "number",
+      "unit": "percent",
+      "showInSpecs": true
+    },
+    {
+      "key": "cask",
+      "type": "text",
+      "searchable": true,
+      "showInSpecs": true
+    }
+  ],
+  "ratingTags": [
+    "peat",
+    "smoke",
+    "vanilla",
+    "caramel",
+    "honey",
+    "dried_fruit",
+    "citrus",
+    "apple",
+    "floral",
+    "spice",
+    "oak",
+    "sherry",
+    "chocolate",
+    "nutty",
+    "salty",
+    "medicinal",
+    "smooth",
+    "long_finish"
+  ],
+  "owned": {
+    "quantity": true,
+    "maxQuantity": 99,
+    "extras": [
+      {
+        "key": "status",
+        "type": "enum",
+        "values": [
+          "sealed",
+          "open"
+        ]
+      }
+    ]
+  },
+  "ageGate": true,
+  "image": {
+    "aspect": "3 / 4"
+  }
+}

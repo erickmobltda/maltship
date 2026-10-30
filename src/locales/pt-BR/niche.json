@@ -1,0 +1,83 @@
+{
+  "brand": {
+    "name": "Maltship",
+    "tagline": "Descubra, avalie e colecione whisky."
+  },
+  "age": {
+    "question": "Este app é sobre bebidas alcoólicas. Você tem 18 anos ou mais?",
+    "refused": "Desculpe, o Maltship é só para maiores de idade.",
+    "warning": "Beba com moderação."
+  },
+  "owned": {
+    "title": "Estante",
+    "subtitle": "As garrafas que você tem, as que quer e o que já provou.",
+    "add": "Pôr na estante",
+    "remove": "Tirar da estante",
+    "inList_one": "{{count}} garrafa",
+    "inList_other": "{{count}} garrafas",
+    "showOnProfile": "Mostrar minha estante no perfil",
+    "empty": "Sua estante está vazia.",
+    "hiddenNote": "Sua estante está oculta para os outros. Ative em Estante ou Configurações."
+  },
+  "attr": {
+    "distillery": "Destilaria",
+    "brand": "Marca",
+    "country": "País",
+    "region": "Região",
+    "style": "Estilo",
+    "age": "Idade",
+    "abv": "Teor alcoólico",
+    "cask": "Barril"
+  },
+  "enum": {
+    "style": {
+      "single_malt": "Single malt",
+      "blended_malt": "Blended malt",
+      "blend": "Blend",
+      "bourbon": "Bourbon",
+      "rye": "Rye",
+      "single_pot_still": "Single pot still",
+      "other": "Outro"
+    }
+  },
+  "zero": {
+    "age": "Sem idade declarada"
+  },
+  "tag": {
+    "peat": "Turfa",
+    "smoke": "Fumaça",
+    "vanilla": "Baunilha",
+    "caramel": "Caramelo",
+    "honey": "Mel",
+    "dried_fruit": "Frutas secas",
+    "citrus": "Cítrico",
+    "apple": "Maçã",
+    "floral": "Floral",
+    "spice": "Especiarias",
+    "oak": "Carvalho",
+    "sherry": "Xerez",
+    "chocolate": "Chocolate",
+    "nutty": "Castanhas",
+    "salty": "Salgado",
+    "medicinal": "Medicinal",
+    "smooth": "Macio",
+    "long_finish": "Final longo"
+  },
+  "extra": {
+    "status": {
+      "label": "Garrafa",
+      "sealed": "Lacrada",
+      "open": "Aberta"
+    }
+  },
+  "experiencedOn": "Provado em",
+  "discover": {
+    "subtitle_one": "{{count}} whisky no catálogo",
+    "subtitle_other": "{{count}} whiskies no catálogo",
+    "placeholder": "Busque por nome, destilaria, região, barril…"
+  },
+  "feed": {
+    "subtitle": "O que o pessoal está provando."
+  },
+  "credits": "Catálogo de exemplo para testes: marcas reais, especificações ilustrativas. O Maltship faz parte do erickmob.dev."
+}
