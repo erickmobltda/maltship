@@ -40,20 +40,20 @@ Todos os apps usam o mesmo **core** (o código em comum). Cada um tem só a sua 
 
 1. **Contas:** uma conta no GitHub, e peça ao Erick para te adicionar nos repositórios. Peça também um **login nos apps** (o cadastro é fechado).
 2. **Instale:** [Node.js](https://nodejs.org) (versão LTS), [Python 3](https://www.python.org/downloads/), [Git](https://git-scm.com), o [GitHub CLI](https://cli.github.com) (`gh`, depois `gh auth login`) e o [Claude Code](https://claude.com/claude-code).
-3. **Baixe o app** (o exemplo usa o Maltship; troque pelo app em que você vai trabalhar):
+3. **Baixe o espaço de trabalho:** o blueprint, com todos os apps dentro dele.
    ```bash
-   gh repo clone erickmobltda/maltship
-   cd maltship
-   npm install
+   gh repo clone erickmobltda/collector-app-blueprint
+   cd collector-app-blueprint
+   node tools/workspace.mjs setup
    ```
-4. **Configuração:** peça ao Erick o conteúdo do arquivo `.env.local` deste app (é o endereço do projeto Firebase; ele não fica no repositório). Salve na pasta do projeto com o nome `.env.local`.
-5. **Rode:** `npm run dev` e abra <http://localhost:5173>. Você vê o app no seu computador, falando com o banco de dados de verdade.
+4. **Configuração:** peça ao Erick o arquivo `.env.local` de cada app (é o endereço do projeto Firebase; ele não fica no repositório). Salve cada um como `products/<app>/.env.local`.
+5. **Rode um app:** `cd products/smokership`, depois `npm run dev`, e abra <http://localhost:5173>. Você vê o app no seu computador, falando com o banco de dados de verdade.
 
-Dica: você pode pedir ao Claude para fazer tudo isso por você. Abra o Claude Code na pasta e diga "configure este projeto para rodar localmente; já tenho o .env.local do Erick".
+Dica: o Claude pode fazer tudo isso por você. Abra o Claude Code na pasta `collector-app-blueprint` e diga "configure o espaço de trabalho; já tenho os .env.local do Erick".
 
 ## 4. Como pedir uma funcionalidade ao Claude
 
-Abra o Claude Code na pasta do app (`claude`) e descreva **o que** você quer e **por quê**, como explicaria para uma pessoa. Um bom pedido tem:
+Abra o Claude Code na pasta **`collector-app-blueprint`** e descreva **o que** você quer e **por quê**, como explicaria para uma pessoa. Um bom pedido tem:
 
 - **O objetivo:** "quero que as pessoas possam ordenar o catálogo por nome, não só por nota."
 - **Onde aparece:** "na tela Descobrir, junto dos filtros".
@@ -66,9 +66,13 @@ Exemplos:
 - "Em todos os apps, mostre o número de itens no perfil do usuário." (mudança no core)
 - "Quero guardar o 'preço pago' nos itens que a pessoa tem." (dado novo → o Claude prepara a proposta e pede para você falar com o Erick sobre as regras)
 
-Peça ao Claude para **abrir um PR** no fim, e para te dizer como testar.
+O Claude monta e te mostra rodando. Quando estiver do seu gosto, diga **"publicar"**. O Claude confirma e então:
+- testa a mudança em todos os apps;
+- abre e aceita (merge) todos os pull requests;
+- espera cada app ir para o ar;
+- te diz onde chegou, com o link de cada app no ar.
 
-Uma mudança "para todos os apps" passa pelo blueprint. O Claude primeiro confere se todos os apps estão atualizados, monta e testa a mudança neste app, experimenta num segundo app, e copia para o blueprint. A ferramenta do blueprint impede se algo estiver fora de ordem. Enquanto isso, a verificação chamada `check-core` reclama neste app; é normal, porque os arquivos comuns só podem mudar no blueprint. Quando o PR do blueprint é aceito, cada app recebe um PR chamado `Core v<N>`, e você faz o merge de um por um.
+Se algo falhar, nada é publicado até ser corrigido. Se parar no meio, peça ao Claude para publicar de novo: ele continua de onde parou.
 
 Nos testes, lembre que o app no seu computador usa o banco de dados **de verdade**: apague suas avaliações de teste, os "seguir" e os itens da coleção quando terminar.
 
@@ -77,7 +81,7 @@ Nos testes, lembre que o app no seu computador usa o banco de dados **de verdade
 | Você (com o Claude) | Erick |
 |---|---|
 | Criar branches, mudar código e textos, abrir PRs, neste app e no blueprint | Firebase, domínios, senhas e chaves, servidores |
-| Fazer merge de PRs **com o CI verde** (o deploy é automático). Para mudanças em todos os apps: teste em dois apps antes, depois faça o merge dos PRs `Core v<N>` um por vez e olhe cada site | Regras de segurança (`erickmob-api`): dados novos no Firestore |
+| Publicar mudanças: o Claude testa em todos os apps, depois aceita e coloca no ar (a skill `publish`) | Regras de segurança (`erickmob-api`): dados novos no Firestore |
 | Adicionar ou corrigir itens do catálogo, traduções, cores | Criar contas, restaurar a conta demo em produção |
 | Propor mudanças no core (no blueprint) | Criar um app novo ou um repositório novo |
 
@@ -86,7 +90,7 @@ Na dúvida, abra o PR e pergunte ao Erick lá.
 ## 6. Quando algo dá errado
 
 - **O CI ficou vermelho no PR:** abra o PR no GitHub, clique na verificação que falhou, copie o erro e passe para o Claude: "o CI falhou com este erro, corrija." Os mais comuns:
-  - `check-core`: alguém editou um arquivo do core neste app. A mudança tem que ser feita no blueprint (o Claude sabe como).
+  - `check-core`: alguém editou um arquivo comum direto no repositório deste app. Mudanças comuns se fazem pelo espaço de trabalho, e o `publish` cuida disso.
   - `i18n:check`: falta um texto em um dos idiomas.
 - **O app não abre localmente:** confira se o `.env.local` existe e se você rodou `npm install`. Peça ao Claude: "o npm run dev não está funcionando, aqui está o erro."
 - **Algo quebrou em produção depois de um merge:** avise o Erick na hora. Um PR que desfaz o merge (um "revert") resolve rápido; o Claude pode preparar.
