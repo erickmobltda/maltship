@@ -1,6 +1,6 @@
 {
   "note": "Written by collector-app-blueprint tools/core-sync.mjs. Core files listed here must not be edited in this repo; see the blueprint docs/10-core-sync.md.",
-  "coreVersion": 4,
+  "coreVersion": 5,
   "nichePaths": [
     "README.md",
     "CHANGELOG.md",
@@ -18,10 +18,10 @@
     ".github/workflows/pages.yml": "1a5c232ee87e4a26ed0b168ead2bc823923fe0da6fefd84831fa661fea4d3693",
     ".gitignore": "ddeff3705182b1339e9117e18e4a8f318120161d6a93cf914d94eedbc8413b0c",
     "AGENTS.md": "52893e0348319a8fa525e9b6da152eff46db8b61c8d8912add5e33bdcfb51e29",
-    "CLAUDE.md": "c0344177cd08eb60bcfe9c3042cbed03a21d56916ffa2324ceae469511f8295b",
-    "CORE_VERSION": "7de1555df0c2700329e815b93b32c571c3ea54dc967b89e81ab73b9972b72d1d",
-    "START_HERE.en.md": "e685fe8fded0527befdb2e64c66729588c82b6d9cbe6d75d3fab73f06798842e",
-    "START_HERE.md": "716188fd250db85df85e10ba7e742130a74671437e81bae346942c0f9e9fde8d",
+    "CLAUDE.md": "e4acf094e70c1345330b7bdbf6d2edf09b6cfaa6519f0041f613ccb4eae80fca",
+    "CORE_VERSION": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06",
+    "START_HERE.en.md": "dd7a4d8ca9b76d06cea0fb1e5a9b5b9a961314914e6c98f99d215343bc5fa624",
+    "START_HERE.md": "583a2d27cf8df2c8a5ec54cf56f533dc4ed18bb9fc63e9abca0696defd574533",
     "eslint.config.js": "13e9ce40de54b2a8344ea6f7a11036fc47f462a7529859fb4c3ad4d1ba2e174c",
     "package.json": "56686ae1b6011cbcfbfd0182fe57f398fac0e7b0a5d5ee58172dc0d0992bb2b1",
     "postcss.config.js": "e32657baf631d7c5f4dc67b4b2ee0ec8e7d5b3c41860e09cddce7c0377cd80bc",

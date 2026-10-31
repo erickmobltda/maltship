@@ -20,41 +20,22 @@ Collaborators may be new to software. Explain what you're doing in plain words, 
 
 ### A feature for every product (the usual case)
 
-All repos sit side by side, e.g. `collector/collector-app-blueprint`, `collector/maltship`, `collector/smokership`, `collector/watcheship`. Run blueprint commands from the blueprint folder; it needs no `npm install` (only Node, git and gh).
+Work from the **collector workspace**: the blueprint repo (`collector-app-blueprint`), with every product cloned inside it under `products/` (`node tools/workspace.mjs setup`). Open Claude Code in the blueprint folder, not in a single app. There:
 
-**Before you start**
-1. In the blueprint: `git switch main && git pull`, then `node tools/core-sync.mjs status`.
-   - If a product shows an open `Core v<N>` PR, it isn't on the latest core yet. If its CI is green, merge it; otherwise fix it first. Never start a core change from a product that's behind.
-2. Pick the **base app**, where you build the feature: `git switch main && git pull` there. Its `CORE_VERSION` must equal the blueprint's `core/CORE_VERSION`.
-3. Does the feature need **new data in Firestore** (a new field, list or collection)? Then the rules in erickmob-api must change first. That's Erick's part: stop and write him the exact data shape and why.
-
-**Build it**
-
-4. In the base app, create a branch, build the feature and test it (`npm run dev`, both languages, 390 px). `check-core` will fail here; that's expected. **`git add` every new file** (no commit needed): `pull` only copies files git knows about.
-5. Keep the core niche-neutral. No niche words (cigar, whisky, watch…) in core code; read niche-specific things from `niche` (`src/niche/config.ts`).
+1. The **`new-change`** skill updates everything (`node tools/workspace.mjs sync`) and picks where to build. Shared changes go in `products/smokership`, which has the most features; app-only parts go in each app's niche files.
+2. Build the change in `products/`, **without committing or branching there**, and try it with `npm run dev`.
+   - Keep the core niche-neutral: no niche words in shared code; read niche-specific things from `niche`.
    - Shared text goes in `src/locales/*/core.json`.
-   - If the feature needs a **per-app setting or label** (a new field in `niche.json` or a key in `locales/*/niche.json`):
-     - make the core work without it: a safe default, or the feature hidden when it's missing;
-     - open one small **niche PR in each product** that adds its value;
-     - merge those first. Extra settings are harmless to the old core.
-6. **Try it in a second product** with a different niche (Smokership has scores and wide images; Maltship and Watcheship don't):
-   1. Use a checkout of it with no uncommitted work.
-   2. Run `node tools/core-sync.mjs apply ../<other-app>`, then `npm install` and the checks there. Look at it in `npm run dev`.
-   3. Undo with `git checkout -- . && git clean -fd` in that app. This throws away everything `apply` changed or added there.
+   - A per-app setting or label goes in that app's niche files, and the core must work without it.
+   - New Firestore data needs Erick first.
+3. The **`publish`** skill runs `node tools/workspace.mjs publish`:
+   - it tests the change in every product;
+   - opens and merges the app-only PRs, the blueprint PR and every `Core v<N>` PR, waiting for green CI and each deploy;
+   - reports the live links.
 
-**Release it**
+   A rerun resumes after a failure.
 
-7. In the blueprint, on a new branch: `node tools/core-sync.mjs pull ../<base-app>`.
-   - It refuses if the base app is behind, or has new files not added to git. It tells you what to fix.
-   - It sets `core/CORE_VERSION` to the next number.
-8. Add `## Core v<N> — YYYY-MM-DD` to the blueprint's `CHANGELOG.md`, with one bullet per change. Run `node tools/core-sync.mjs check --base origin/main`, then open the blueprint PR. Its CI checks the version number.
-   - If someone else's core change merges first, the check asks for a new number. Merge `main` into your branch, set `core/CORE_VERSION` to the number it asks for, and rename the CHANGELOG heading.
-9. In the base app, drop the feature branch (`git switch main`, then `git branch -D <branch>`). The change comes back through the sync like everywhere else.
-
-**Ship it**
-
-10. After the blueprint PR is merged: `node tools/core-sync.mjs status`. If the `Core v<N>` PRs didn't appear (the automatic sync needs a token Erick sets up), run `node tools/core-sync.mjs push`.
-11. Merge the `Core v<N>` PRs **one at a time** when their CI is green, and open each live site after its deploy (about 1 minute).
+If you are running inside a single product repo instead of the workspace, don't attempt a shared change here (`check-core` would fail). Ask the user to open Claude Code in the workspace. The manual procedure, for the owner, is in the blueprint's `docs/10-core-sync.md` ("By hand").
 
 ## Rules
 
@@ -85,4 +66,4 @@ Catalog data: the current items are **samples** (real brands, illustrative specs
 - [ ] Tried it in the browser at phone width (390 px) and on desktop, in **both** languages, signed in and signed out.
 - [ ] The "Try the demo" account still works (it can't use social features by design).
 - [ ] PR open with a short description and screenshots for UI changes; CHANGELOG line for anything users notice.
-- [ ] Core changes: followed "A feature for every product" above (tested in two products, `pull` and `check` passed, `Core v<N>` PRs merged one at a time).
+- [ ] Shared changes: published from the workspace with `publish` (it tests every product and merges every PR).
