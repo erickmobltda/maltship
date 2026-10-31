@@ -1,16 +1,24 @@
 import { Link } from 'react-router-dom';
 import type { Item } from '@/lib/catalog';
+import { cn } from '@/lib/utils';
 import { niche } from '@/niche/config';
 import { ItemImage } from './ItemImage';
 import { useAttrText } from './AttrText';
 
 export function ItemCard({ item, extra }: { item: Item; extra?: React.ReactNode }) {
   const text = useAttrText();
+  const top = niche.image.layout === 'top';
   const subtitle = niche.attributes.filter((a) => a.subtitle).map((a) => text(a, item.attrs[a.key])).filter(Boolean).join(' · ');
   return (
-    <Link to={`/item/${item.id}`} className="group flex min-w-0 gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-primary/40 animate-fade-in">
-      <ItemImage item={item} className="w-16 shrink-0" />
-      <div className="min-w-0 flex-1 self-center">
+    <Link
+      to={`/item/${item.id}`}
+      className={cn(
+        'group flex min-w-0 gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-primary/40 animate-fade-in',
+        top && 'flex-col',
+      )}
+    >
+      <ItemImage item={item} className={top ? 'w-full' : 'w-16 shrink-0'} />
+      <div className={cn('min-w-0 flex-1', !top && 'self-center')}>
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="truncate font-medium group-hover:text-primary">{item.name}</div>

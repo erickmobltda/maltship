@@ -4,6 +4,9 @@
 
 **Live:** <https://maltship.erickmob.dev> · **Core:** shared with [Watcheship](https://github.com/erickmobltda/watcheship) and every other [product](https://github.com/erickmobltda/collector-app-blueprint/blob/main/PRODUCTS.md); version in `CORE_VERSION`
 
+
+**New here?** Read [START_HERE.md](START_HERE.md) (português) or [START_HERE.en.md](START_HERE.en.md) (English). AI agents: [CLAUDE.md](CLAUDE.md).
+
 ## Features
 
 - **Discover:** the whole catalog (20 sample whiskies for now) with accent-insensitive search and filters by style, distillery, country and region. Filters live in the URL.
@@ -45,7 +48,7 @@ The app splits into the shared core and a niche layer:
 - **Niche** (edit here, with a normal PR): `src/niche/` (`niche.json`, `Logo`, `Placeholder`, `theme.css`), `src/locales/*/niche.json`, `data/`, `public/`, `scripts/demo-seed.json`, `index.html`, this README and the CHANGELOG.
 - **Core** (everything else): it lives in [collector-app-blueprint/core](https://github.com/erickmobltda/collector-app-blueprint/tree/main/core) and arrives here as a `Core v<N>` PR. Don't edit core files in this repo: CI runs `scripts/check-core.mjs` and fails. To change the core, follow the blueprint's [docs/10](https://github.com/erickmobltda/collector-app-blueprint/blob/main/docs/10-core-sync.md).
 
-## Renaming the brand
+## Renaming the brand (owner only)
 
 The internal id `whisky` (Firestore namespace) never changes. The brand name does, and lives in:
 1. `src/locales/{en,pt-BR}/niche.json` → `brand.name`, `brand.tagline`, `credits`, `age.refused`;
@@ -58,7 +61,10 @@ For a new subdomain as well:
 - add the new domain to Firebase Auth's authorized domains;
 - update the my_readmes index.
 
-## Required env (repo secrets)
+## Required env (repo secrets, owner only)
+
+Collaborators get the same four values from Erick as a `.env.local` file; they are not committed.
+
 
 | Variable | Source |
 |---|---|
@@ -72,11 +78,11 @@ For a new subdomain as well:
 ```bash
 npm install
 npm run dev                      # against production Firebase (needs .env.local, see .env.example)
-npm run typecheck && npm run lint && npm test && npm run i18n:check && npm run build
+npm run typecheck && npm run lint && npm test && npm run i18n:check && node scripts/check-core.mjs && npm run build
 npm run catalog                  # rebuild public/catalog.json after editing data/sample.json
 ```
 
-To run against the emulators:
+The emulators need the rules file from the private erickmob-api repo, so this part is **owner only**. To run against the emulators:
 1. Copy `erickmob-api/firebase/firestore.rules` into a temp dir with a `firebase.json` that enables `auth` (9099) and `firestore` (8080).
 2. Run `firebase emulators:start --only auth,firestore --project demo-erickmob`.
 3. Start the app:
@@ -86,7 +92,7 @@ VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-erickmob VITE_FIREBASE_API
   VITE_FIREBASE_APP_ID=fake VITE_FIREBASE_AUTH_DOMAIN=localhost npm run dev
 ```
 
-To seed the demo account, in production or in the emulator (set `FIRESTORE_EMULATOR_HOST`, `FIREBASE_AUTH_EMULATOR_HOST` and `GCLOUD_PROJECT=demo-erickmob` for the latter):
+**Owner only:** to seed the demo account, in production or in the emulator (set `FIRESTORE_EMULATOR_HOST`, `FIREBASE_AUTH_EMULATOR_HOST` and `GCLOUD_PROJECT=demo-erickmob` for the latter):
 
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=~/.secrets/erickmob-migration/firebase-sa.json npm run reset-demo

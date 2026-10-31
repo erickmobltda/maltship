@@ -41,6 +41,7 @@ export function ItemPage() {
   const [askUnwish, setAskUnwish] = React.useState(false);
 
   const item = catalog?.get(id);
+  const top = niche.image.layout === 'top';
   const mineOwned = owned.data.find((o) => o.itemId === id);
   const wished = wishlist.data.some((w) => w.itemId === id);
   const mine = user ? ratings.data.find((r) => r.uid === user.uid) : undefined;
@@ -88,8 +89,8 @@ export function ItemPage() {
       </button>
 
       <div className="rounded-2xl border bg-card p-4 md:p-6">
-        <div className="flex gap-4">
-          <ItemImage item={item} className="w-28 shrink-0 md:w-40" />
+        <div className={cn('flex gap-4', top && 'flex-col')}>
+          <ItemImage item={item} className={top ? 'w-full' : 'w-28 shrink-0 md:w-40'} />
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
