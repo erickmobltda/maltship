@@ -10,9 +10,11 @@ const manifest = JSON.parse(readFileSync(new URL('../.core-manifest.json', impor
 const root = new URL('../', import.meta.url);
 
 // package.json is shared except for the app's own name and version.
+// Line endings don't count (Windows checkouts may use CRLF).
 function normalized(path, content) {
-  if (path !== 'package.json') return content;
-  const { name: _n, version: _v, ...rest } = JSON.parse(content);
+  const text = content.replace(/\r\n/g, '\n');
+  if (path !== 'package.json') return text;
+  const { name: _n, version: _v, ...rest } = JSON.parse(text);
   return JSON.stringify(rest, null, 2);
 }
 
