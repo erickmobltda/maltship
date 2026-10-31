@@ -68,7 +68,7 @@ Examples:
 
 Ask Claude to **open a PR** when it's done, and to tell you how to test it.
 
-A change "for every app" goes through the blueprint: Claude builds and tests it in this app first, and copies it to the blueprint. While that's in progress, the check called `check-core` complains in this app; that's normal, because shared files may only change in the blueprint. When the blueprint PR is merged, every app receives a PR named `Core v<N>`, and you merge them one by one.
+A change "for every app" goes through the blueprint. Claude first checks that every app is up to date, builds and tests the change in this app, tries it in a second app, and copies it to the blueprint. The blueprint's tool stops it if something is out of order. While that's in progress, the check called `check-core` complains in this app; that's normal, because shared files may only change in the blueprint. When the blueprint PR is merged, every app receives a PR named `Core v<N>`, and you merge them one by one.
 
 While testing, remember the app on your computer uses the **real** database: delete your test ratings, follows and collection items when you're done.
 

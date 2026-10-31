@@ -1,0 +1,6 @@
+# Same line endings on every OS, so scripts/check-core.mjs and the core sync see identical files.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary

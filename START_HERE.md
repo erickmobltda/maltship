@@ -68,7 +68,7 @@ Exemplos:
 
 Peça ao Claude para **abrir um PR** no fim, e para te dizer como testar.
 
-Uma mudança "para todos os apps" passa pelo blueprint: o Claude monta e testa primeiro neste app, e depois copia para o blueprint. Enquanto isso, a verificação chamada `check-core` reclama neste app; é normal, porque os arquivos comuns só podem mudar no blueprint. Quando o PR do blueprint é aceito, cada app recebe um PR chamado `Core v<N>`, e você faz o merge de um por um.
+Uma mudança "para todos os apps" passa pelo blueprint. O Claude primeiro confere se todos os apps estão atualizados, monta e testa a mudança neste app, experimenta num segundo app, e copia para o blueprint. A ferramenta do blueprint impede se algo estiver fora de ordem. Enquanto isso, a verificação chamada `check-core` reclama neste app; é normal, porque os arquivos comuns só podem mudar no blueprint. Quando o PR do blueprint é aceito, cada app recebe um PR chamado `Core v<N>`, e você faz o merge de um por um.
 
 Nos testes, lembre que o app no seu computador usa o banco de dados **de verdade**: apague suas avaliações de teste, os "seguir" e os itens da coleção quando terminar.
 
