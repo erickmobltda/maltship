@@ -1,7 +1,10 @@
-// Fails when a translation key exists in one language but not the other, or when
-// something in src/niche/niche.json (attribute, enum value, tag, extra) has no label.
+// Fails when a translation key exists in one language but not the other, when something
+// in src/niche/niche.json (attribute, enum value, tag, extra) has no label, or when shared
+// code uses a `niche:` text this app doesn't have. Every app must say it in its own words.
 //   npm run i18n:check
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const LANGS = ['en', 'pt-BR'];
@@ -36,8 +39,32 @@ for (const [i, l] of LANGS.entries()) {
   for (const k of units) if (!keys.core[i].has(k)) problems.push(`core:${k} is missing in ${l}`);
 }
 
+// Literal `niche:` keys in shared code (dynamic ones like `niche:attr.${key}` are covered above).
+const SRC = fileURLToPath(new URL('../src', import.meta.url));
+const sourceFiles = (dir) =>
+  readdirSync(dir).flatMap((name) => {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) return full === join(SRC, 'niche') ? [] : sourceFiles(full);
+    return /\.(ts|tsx)$/.test(name) ? [full] : [];
+  });
+// Texts of optional features are required only in apps that turn the feature on in niche.json.
+// A new optional feature adds its key prefix here.
+const OPTIONAL = { 'age.': niche.ageGate === true, 'scores.': Boolean(niche.scores) };
+const needed = (k) => Object.entries(OPTIONAL).every(([prefix, on]) => !k.startsWith(prefix) || on);
+const used = new Map();
+for (const file of sourceFiles(SRC)) {
+  for (const m of readFileSync(file, 'utf8').matchAll(/['"`]niche:([A-Za-z0-9_.-]+)['"`]/g)) {
+    if (!used.has(m[1]) && needed(m[1])) used.set(m[1], file.slice(SRC.length + 1));
+  }
+}
+for (const [i, l] of LANGS.entries()) {
+  for (const [k, file] of used) {
+    if (!keys.niche[i].has(k)) problems.push(`niche:${k} (used in src/${file}) is missing in ${l}: add this app's own text for it to src/locales/${l}/niche.json`);
+  }
+}
+
 if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);
 }
-console.log(`i18n ok: ${LANGS.join(', ')} · ${NAMESPACES.map((ns) => `${ns} ${keys[ns][0].size} keys`).join(', ')}`);
+console.log(`i18n ok: ${LANGS.join(', ')} · ${NAMESPACES.map((ns) => `${ns} ${keys[ns][0].size} keys`).join(', ')} · ${used.size} niche keys used by shared code`);

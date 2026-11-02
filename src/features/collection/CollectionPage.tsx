@@ -19,7 +19,7 @@ function Empty({ children }: { children: React.ReactNode }) {
   return <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{children}</div>;
 }
 
-/** Owned-item extras from the niche config (e.g. whisky sealed/open). */
+/** Owned-item extras from the niche config (e.g. a sealed/open status). */
 function Extras({ item }: { item: WithId<OwnedItem> }) {
   const { t } = useTranslation();
   const set = (key: string, value: string | boolean) => setOwnedExtra(item, key, value).catch(() => toast.error(t('common.error')));
