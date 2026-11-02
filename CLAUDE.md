@@ -37,11 +37,32 @@ Work from the **collector workspace**: the blueprint repo (`collector-app-bluepr
 
 If you are running inside a single product repo instead of the workspace, don't attempt a shared change here (`check-core` would fail). Ask the user to open Claude Code in the workspace. The manual procedure, for the owner, is in the blueprint's `docs/10-core-sync.md` ("By hand").
 
+## One feature, each app in its own words
+
+Almost every feature reaches **every** app. The **behaviour** is shared; the **words are not**. Smokership talks about cigars and the humidor, Maltship about whiskies and the shelf, Watcheship about watches and the watch box. An app must never show another app's words.
+
+- **Shared code holds behaviour only.** No niche words (cigar, whisky, watch, humidor…) in shared code, shared texts (`core.json`), comments or examples. The blueprint's `check` fails on them.
+- **Every text that names the item or its world** goes through a `niche:` key, or a `niche.json` setting when it's not text. That includes buttons, labels, emails (subject and body), share texts, notifications, page titles and meta, empty states, placeholders and examples. Neutral texts ("Save", "Followers") stay in `core.json`.
+- **Add every new `niche:` key to every app,** in `en` and `pt-BR`, written for that app's niche. Don't copy one app's sentence into another. `npm run i18n:check` fails in any app that is missing a key the shared code uses, so `publish` stops before anything ships.
+- **Optional features:** if a feature is switched on per app in `niche.json` (like the age gate or critic scores), list its key prefix in `OPTIONAL` in `scripts/i18n-check.mjs`. Apps that turn it on must then have the texts, and the others don't need them.
+- **Interpolate, don't concatenate.** Pass values as variables (`t('niche:share.subject', { name, stars })`) so each language and niche can order the words its own way.
+- **Anything sent outside the app** (an email, a message, a post) must be built from these texts and `niche:brand.name`. If it needs a server (sending email does), that's Erick's part: the app sends the already-translated texts, and the server never hard-codes them.
+
+**Example: "after rating, share it by email".** Shared code adds a *Share by email* action that opens a mail with `t('niche:share.subject', { name, stars })` and `t('niche:share.body', { name, stars, notes, link })`. Each app's `niche.json` says it its own way:
+
+| App | `share.subject` (en) | `share.subject` (pt-BR) |
+|---|---|---|
+| Smokership | `I rated the {{name}} cigar {{stars}}/5` | `Avaliei o charuto {{name}} com {{stars}}/5` |
+| Maltship | `I rated the {{name}} whisky {{stars}}/5` | `Avaliei o whisky {{name}} com {{stars}}/5` |
+| Watcheship | `I rated the {{name}} watch {{stars}}/5` | `Avaliei o relógio {{name}} com {{stars}}/5` |
+
+The body follows the same pattern, e.g. "smoked on", "tasted on" or "worn since", taken from each app's `experiencedOn` wording.
+
 ## Rules
 
 - **Every user-visible string in both languages.** Text added by core code goes in `src/locales/{en,pt-BR}/core.json` (part of the core); text that differs per niche goes in `.../niche.json`; `t('key')` for core, `t('niche:key')` for niche. `npm run i18n:check` must pass.
 - **Firestore paths only through `paths` in `src/lib/firebase.ts`.** Every document carries `niche`; dates are ISO strings; never write `undefined`.
-- **Branch → PR → merge when CI is green.** Never commit to `main`. One feature per PR; describe what changed and how you tested it.
+- **In the workspace, don't commit or branch in `products/`:** `publish` handles git, PRs and merges. Outside it: branch → PR → merge when CI is green, never commit to `main`.
 - **Never**: deploy by hand, change Firebase/DNS/Cloudflare/secrets, run `npm run reset-demo` against production, commit `.env.local` or any key, delete user data. Those are Erick's.
 - Match the surrounding code style; keep changes small; don't refactor what the task doesn't need.
 
