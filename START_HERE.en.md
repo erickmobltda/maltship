@@ -64,7 +64,8 @@ Examples:
 - "Add 5 more whiskies to the catalog: [list]. Keep the current format."
 - "Change the main colour of this app to a darker blue."
 - "In every app, show the number of items on the user's profile." (core change)
-- "I want to add a 'price paid' field to owned items." (new data → Claude will prepare the proposal and ask you to talk to Erick about the rules)
+- "I want to keep a history of the items someone removed from their collection, only they can see it." (new private data → Claude builds it without needing Erick)
+- "I want to add a 'price paid' field to owned items." (new data in the collection, which other people can see → Claude will prepare the proposal and ask you to talk to Erick about the rules)
 
 Claude builds it and shows it to you running. When you like it, say **"publish"**. Claude confirms, then:
 - tests the change in every app;
@@ -81,7 +82,7 @@ While testing, remember the app on your computer uses the **real** database: del
 | You (with Claude) | Erick |
 |---|---|
 | Create branches, change code and texts, open PRs, in this app and in the blueprint | Firebase, domains, secrets, servers |
-| Publish changes: Claude tests them in every app, then merges and deploys them (the `publish` skill) | Security rules (`erickmob-api`): new data in Firestore |
+| Publish changes: Claude tests them in every app, then merges and deploys them (the `publish` skill) | Security rules (`erickmob-api`): new Firestore data that other people read or that sits outside `users/{uid}/`. Private data under `users/{uid}/` doesn't need Erick |
 | Add or fix catalog items, translations, colours | Create accounts, reset the demo account in production |
 | Propose changes to the core (in the blueprint) | Create a new app or new repo |
 
