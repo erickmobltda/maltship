@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { deleteDoc, orderBy, query, setDoc, where } from 'firebase/firestore';
-import { paths, type ListName } from '@/lib/firebase';
+import { deleteDoc, doc, orderBy, query, setDoc, where, writeBatch } from 'firebase/firestore';
+import { db, paths, type ListName } from '@/lib/firebase';
 import { useSnapshot } from '@/lib/useSnapshot';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { niche } from '@/niche/config';
-import type { OwnedItem, WishItem } from '@/lib/types';
+import type { OwnedItem, RemovedItem, WishItem } from '@/lib/types';
 
 /**
  * A user's owned items (the display) or wishlist, newest first. Document id = item id.
@@ -27,11 +27,26 @@ export function useMyLists() {
   return { owned, wishlist };
 }
 
+/** What left my collection, newest first. */
+export function useRemoved(uid: string | undefined) {
+  const q = React.useMemo(() => (uid ? query(paths.removed(uid), orderBy('removedAt', 'desc')) : null), [uid]);
+  return useSnapshot<RemovedItem>(q);
+}
+
 const now = () => new Date().toISOString();
+
+/** Deletes the item and logs the removal in one write, so neither happens without the other. */
+function removeOwned({ uid, itemId, addedAt }: OwnedItem) {
+  const removal: RemovedItem = { niche: niche.niche, uid, itemId, addedAt, removedAt: now() };
+  const batch = writeBatch(db);
+  batch.delete(paths.listItem(uid, 'owned', itemId));
+  batch.set(doc(paths.removed(uid)), removal);
+  return batch.commit();
+}
 
 /** Quantity 0 removes the item; with quantity off in the niche, any positive value means 1. */
 export async function setOwned(uid: string, itemId: string, quantity: number, existing?: OwnedItem) {
-  if (quantity <= 0) return deleteDoc(paths.listItem(uid, 'owned', itemId));
+  if (quantity <= 0) return existing && removeOwned(existing);
   const q = niche.owned.quantity ? Math.min(quantity, niche.owned.maxQuantity) : 1;
   const item: OwnedItem = {
     niche: niche.niche,

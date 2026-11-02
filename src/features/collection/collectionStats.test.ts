@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { AttributeDef } from '@/lib/niche-types';
-import { averageRating, countUnits, monthlyAdded, topTraits } from './collectionStats';
+import { averageRating, countUnits, monthlyActivity, topTraits } from './collectionStats';
 
 describe('countUnits', () => {
   it('adds the quantities', () => {
@@ -9,17 +9,29 @@ describe('countUnits', () => {
   });
 });
 
-describe('monthlyAdded', () => {
+describe('monthlyActivity', () => {
   const now = new Date('2026-03-15T12:00:00Z');
   it('covers the months up to the current one, crossing the year', () => {
-    expect(monthlyAdded([], now, 4).map((m) => m.month)).toEqual(['2025-12', '2026-01', '2026-02', '2026-03']);
+    expect(monthlyActivity([], [], now, 4).map((m) => m.month)).toEqual(['2025-12', '2026-01', '2026-02', '2026-03']);
   });
   it('counts each item in its month and ignores older ones', () => {
     const owned = [{ addedAt: '2026-03-01T00:00:00Z' }, { addedAt: '2026-03-31T23:00:00Z' }, { addedAt: '2026-01-10T00:00:00Z' }, { addedAt: '2020-01-10T00:00:00Z' }];
-    expect(monthlyAdded(owned, now, 3)).toEqual([
-      { month: '2026-01', count: 1 },
-      { month: '2026-02', count: 0 },
-      { month: '2026-03', count: 2 },
+    expect(monthlyActivity(owned, [], now, 3)).toEqual([
+      { month: '2026-01', added: 1, removed: 0 },
+      { month: '2026-02', added: 0, removed: 0 },
+      { month: '2026-03', added: 2, removed: 0 },
+    ]);
+  });
+  it('counts a removed item when it left and when it arrived', () => {
+    const removed = [
+      { addedAt: '2026-01-10T00:00:00Z', removedAt: '2026-03-02T00:00:00Z' },
+      { addedAt: '2020-01-10T00:00:00Z', removedAt: '2026-02-02T00:00:00Z' },
+      { addedAt: '2020-01-10T00:00:00Z', removedAt: '2020-02-02T00:00:00Z' },
+    ];
+    expect(monthlyActivity([], removed, now, 3)).toEqual([
+      { month: '2026-01', added: 1, removed: 0 },
+      { month: '2026-02', added: 0, removed: 1 },
+      { month: '2026-03', added: 0, removed: 1 },
     ]);
   });
 });

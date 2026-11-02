@@ -96,9 +96,14 @@
       "ratedOf": "{{rated}} of {{total}} rated",
       "traits": "Most in common",
       "traitsEmpty": "Add more items to see what they have in common.",
-      "addedChart": "Added per month",
       "addedCount_one": "{{count}} added",
-      "addedCount_other": "{{count}} added"
+      "addedCount_other": "{{count}} added",
+      "activityChart": "Added and removed per month",
+      "month": "Month",
+      "added": "Added",
+      "removed": "Removed",
+      "removedCount_one": "{{count}} removed",
+      "removedCount_other": "{{count}} removed"
     }
   },
   "feed": {

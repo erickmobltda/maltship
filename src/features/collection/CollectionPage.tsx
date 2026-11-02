@@ -16,7 +16,7 @@ import { updateProfile } from '@/features/social/useSocial';
 import { useUserRatings } from '@/features/ratings/useRatings';
 import { formatDay, RatingCard } from '@/features/ratings/RatingCard';
 import { CollectionSummary } from './CollectionSummary';
-import { setOwnedExtra, useMyLists } from './useCollection';
+import { setOwnedExtra, useMyLists, useRemoved } from './useCollection';
 
 function Empty({ children }: { children: React.ReactNode }) {
   return <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{children}</div>;
@@ -57,6 +57,7 @@ export function CollectionPage() {
   const { user, isDemo, profile } = useAuth();
   const { data: catalog } = useCatalog();
   const { owned, wishlist } = useMyLists();
+  const removed = useRemoved(user?.uid);
   const rated = useUserRatings(user?.uid, true);
   const [text, setText] = React.useState('');
 
@@ -101,7 +102,7 @@ export function CollectionPage() {
         ) : null}
       </div>
 
-      {catalog && owned.data.length > 0 ? <CollectionSummary owned={owned.data} ratings={rated.data} catalog={catalog} /> : null}
+      {catalog && owned.data.length + removed.data.length > 0 ? <CollectionSummary owned={owned.data} removed={removed.data} ratings={rated.data} catalog={catalog} /> : null}
 
       <div className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />

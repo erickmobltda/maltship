@@ -140,7 +140,7 @@ export function ItemPage() {
                 </button>
               </div>
             ) : (
-              <Button variant="outline" className="border-primary text-primary" onClick={() => run(() => setOwned(user!.uid, id, 0))}>
+              <Button variant="outline" className="border-primary text-primary" onClick={() => run(() => setOwned(user!.uid, id, 0, mineOwned))}>
                 <Archive /> {t('niche:owned.remove')}
               </Button>
             )

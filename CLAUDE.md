@@ -16,7 +16,7 @@ Collaborators may be new to software. Explain what you're doing in plain words, 
 |---|---|---|
 | Change this app's catalog, labels, texts, colours, logo, age gate, tags, attributes | **niche** files in this repo: `src/niche/**`, `src/locales/*/niche.json`, `data/**`, `public/**`, `scripts/niche/**`, `scripts/demo-seed.json`, `index.html`, `README.md`, `CHANGELOG.md` | Normal branch + PR here |
 | Change how *every* app works: a screen, a hook, a component, shared text in `src/locales/*/core.json`, scripts, config, CI | **core**, in the blueprint | See below. **Never edit a core file here**: CI (`scripts/check-core.mjs`) fails |
-| Store new data in Firestore (a new field or collection) | rules in **erickmob-api** (private, owner only) + core | Don't guess: write the exact data shape and why in the PR, and ask Erick to change the rules first |
+| Store new data in Firestore (a new field or collection) | core; rules in **erickmob-api** (private, owner only) only for shared or public data | Private data under `users/{uid}/`, read only by its owner: the rules already allow it, so build it without asking. Shared or public data, which other users read: write the exact data shape and why in the PR, and ask Erick to change the rules first |
 
 ### A feature for every product (the usual case)
 
