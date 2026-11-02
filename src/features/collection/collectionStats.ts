@@ -1,21 +1,28 @@
 import type { Item } from '@/lib/catalog';
 import type { AttributeDef } from '@/lib/niche-types';
-import type { OwnedItem, Rating } from '@/lib/types';
+import type { OwnedItem, Rating, RemovedItem } from '@/lib/types';
 
 export const countUnits = (owned: Pick<OwnedItem, 'quantity'>[]) => owned.reduce((sum, o) => sum + o.quantity, 0);
 
-/** Items added per month, oldest first, ending in the current month. Months with none count 0. */
-export function monthlyAdded(owned: Pick<OwnedItem, 'addedAt'>[], now = new Date(), months = 12) {
-  const counts = new Map<string, number>();
+/**
+ * Items added and removed per month, oldest first, ending in the current month. Months with none count 0.
+ * A removed item still counts as added in its own month.
+ */
+export function monthlyActivity(owned: Pick<OwnedItem, 'addedAt'>[], removed: Pick<RemovedItem, 'addedAt' | 'removedAt'>[], now = new Date(), months = 12) {
+  const counts = new Map<string, { month: string; added: number; removed: number }>();
   for (let i = months - 1; i >= 0; i--) {
-    counts.set(new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1)).toISOString().slice(0, 7), 0);
+    const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1)).toISOString().slice(0, 7);
+    counts.set(month, { month, added: 0, removed: 0 });
   }
-  for (const o of owned) {
-    const month = o.addedAt.slice(0, 7);
-    const count = counts.get(month);
-    if (count !== undefined) counts.set(month, count + 1);
+  for (const o of [...owned, ...removed]) {
+    const entry = counts.get(o.addedAt.slice(0, 7));
+    if (entry) entry.added++;
   }
-  return [...counts.entries()].map(([month, count]) => ({ month, count }));
+  for (const r of removed) {
+    const entry = counts.get(r.removedAt.slice(0, 7));
+    if (entry) entry.removed++;
+  }
+  return [...counts.values()];
 }
 
 /** The attribute values most items share. A value on a single item is not "in common". */

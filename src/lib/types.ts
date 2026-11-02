@@ -37,6 +37,15 @@ export interface OwnedItem {
   extra?: Record<string, string | number | boolean>;
 }
 
+/** One item leaving the collection. Private: apps/<APP>/users/{uid}/removed/{autoId}. */
+export interface RemovedItem {
+  niche: string;
+  uid: string;
+  itemId: string;
+  addedAt: string;
+  removedAt: string;
+}
+
 export interface WishItem {
   niche: string;
   uid: string;

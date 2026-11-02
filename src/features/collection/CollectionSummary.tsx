@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Stars } from '@/components/Stars';
 import { useAttrText } from '@/components/AttrText';
 import type { Item } from '@/lib/catalog';
-import type { OwnedItem, Rating } from '@/lib/types';
+import type { OwnedItem, Rating, RemovedItem } from '@/lib/types';
 import { niche } from '@/niche/config';
-import { averageRating, countUnits, monthlyAdded, topTraits } from './collectionStats';
+import { averageRating, countUnits, monthlyActivity, topTraits } from './collectionStats';
 
 const ADDED_COLOR = '#3987e5';
+const REMOVED_COLOR = '#d95926';
 const HEIGHT = 140;
 const PAD = { top: 12, right: 10, bottom: 22, left: 26 };
 
@@ -28,18 +29,28 @@ function useWidth() {
   return [ref, width] as const;
 }
 
-function AddedChart({ data }: { data: { month: string; count: number }[] }) {
+function Key({ color, children }: { color: string; children: React.ReactNode }) {
+  return (
+    <span className="flex items-center gap-1.5">
+      <span className="h-0.5 w-3 rounded-full" style={{ backgroundColor: color }} />
+      {children}
+    </span>
+  );
+}
+
+function ActivityChart({ data }: { data: { month: string; added: number; removed: number }[] }) {
   const { t, i18n } = useTranslation();
   const [ref, width] = useWidth();
   const [hover, setHover] = React.useState<number | null>(null);
 
-  const max = Math.max(1, ...data.map((d) => d.count));
+  const max = Math.max(1, ...data.flatMap((d) => [d.added, d.removed]));
   const ticks = [...new Set([0, Math.ceil(max / 2), max])];
   const plotWidth = Math.max(1, width - PAD.left - PAD.right);
   const plotHeight = HEIGHT - PAD.top - PAD.bottom;
   const x = (i: number) => PAD.left + (i * plotWidth) / (data.length - 1);
   const y = (v: number) => PAD.top + plotHeight - (v * plotHeight) / max;
-  const line = data.map((d, i) => `${i ? 'L' : 'M'}${x(i)},${y(d.count)}`).join('');
+  const line = (value: (d: (typeof data)[number]) => number) => data.map((d, i) => `${i ? 'L' : 'M'}${x(i)},${y(value(d))}`).join('');
+  const addedLine = line((d) => d.added);
   const labelStep = width < 420 ? 2 : 1;
   const active = hover === null ? null : data[hover];
 
@@ -52,7 +63,7 @@ function AddedChart({ data }: { data: { month: string; count: number }[] }) {
   return (
     <div ref={ref} className="relative mt-2">
       {width > 0 ? (
-        <svg width={width} height={HEIGHT} role="img" aria-label={t('collection.summary.addedChart')} className="touch-pan-y" onPointerDown={pick} onPointerMove={pick} onPointerLeave={() => setHover(null)}>
+        <svg width={width} height={HEIGHT} role="img" aria-label={t('collection.summary.activityChart')} className="touch-pan-y" onPointerDown={pick} onPointerMove={pick} onPointerLeave={() => setHover(null)}>
           {ticks.map((v) => (
             <g key={v}>
               <line x1={PAD.left} x2={width - PAD.right} y1={y(v)} y2={y(v)} stroke="hsl(var(--border))" />
@@ -68,12 +79,14 @@ function AddedChart({ data }: { data: { month: string; count: number }[] }) {
               </text>
             ) : null,
           )}
-          <path d={`${line}L${x(data.length - 1)},${y(0)}L${x(0)},${y(0)}Z`} fill={ADDED_COLOR} opacity="0.1" />
-          <path d={line} fill="none" stroke={ADDED_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={`${addedLine}L${x(data.length - 1)},${y(0)}L${x(0)},${y(0)}Z`} fill={ADDED_COLOR} opacity="0.1" />
+          <path d={addedLine} fill="none" stroke={ADDED_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={line((d) => d.removed)} fill="none" stroke={REMOVED_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           {active && hover !== null ? (
             <>
               <line x1={x(hover)} x2={x(hover)} y1={PAD.top} y2={y(0)} stroke="hsl(var(--muted-foreground))" />
-              <circle cx={x(hover)} cy={y(active.count)} r="4" fill={ADDED_COLOR} stroke="hsl(var(--card))" strokeWidth="2" />
+              <circle cx={x(hover)} cy={y(active.added)} r="4" fill={ADDED_COLOR} stroke="hsl(var(--card))" strokeWidth="2" />
+              <circle cx={x(hover)} cy={y(active.removed)} r="4" fill={REMOVED_COLOR} stroke="hsl(var(--card))" strokeWidth="2" />
             </>
           ) : null}
         </svg>
@@ -85,16 +98,26 @@ function AddedChart({ data }: { data: { month: string; count: number }[] }) {
           className="pointer-events-none absolute top-0 -translate-x-1/2 whitespace-nowrap rounded-lg border bg-background px-2 py-1 text-xs shadow"
           style={{ left: Math.min(width - 60, Math.max(60, x(hover))) }}
         >
-          {monthLabel(active.month, i18n.language, { month: 'short', year: 'numeric' })}: <strong>{t('collection.summary.addedCount', { count: active.count })}</strong>
+          <div className="text-muted-foreground">{monthLabel(active.month, i18n.language, { month: 'short', year: 'numeric' })}</div>
+          <Key color={ADDED_COLOR}>{t('collection.summary.addedCount', { count: active.added })}</Key>
+          <Key color={REMOVED_COLOR}>{t('collection.summary.removedCount', { count: active.removed })}</Key>
         </div>
       ) : null}
       <table className="sr-only">
-        <caption>{t('collection.summary.addedChart')}</caption>
+        <caption>{t('collection.summary.activityChart')}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t('collection.summary.month')}</th>
+            <th scope="col">{t('collection.summary.added')}</th>
+            <th scope="col">{t('collection.summary.removed')}</th>
+          </tr>
+        </thead>
         <tbody>
           {data.map((d) => (
             <tr key={d.month}>
               <th scope="row">{monthLabel(d.month, i18n.language, { month: 'long', year: 'numeric' })}</th>
-              <td>{d.count}</td>
+              <td>{d.added}</td>
+              <td>{d.removed}</td>
             </tr>
           ))}
         </tbody>
@@ -104,14 +127,14 @@ function AddedChart({ data }: { data: { month: string; count: number }[] }) {
 }
 
 /** The numbers at the top of the collection: how much, how it grew, what it has in common, how it rates. */
-export function CollectionSummary({ owned, ratings, catalog }: { owned: OwnedItem[]; ratings: Rating[]; catalog: Map<string, Item> }) {
+export function CollectionSummary({ owned, removed, ratings, catalog }: { owned: OwnedItem[]; removed: RemovedItem[]; ratings: Rating[]; catalog: Map<string, Item> }) {
   const { t, i18n } = useTranslation();
   const text = useAttrText();
   const units = countUnits(owned);
   const items = owned.flatMap((o) => catalog.get(o.itemId) ?? []);
   const traits = topTraits(items, niche.attributes);
   const { average, rated } = averageRating(owned, ratings);
-  const added = monthlyAdded(owned);
+  const activity = monthlyActivity(owned, removed);
 
   return (
     <section aria-label={t('collection.summary.title')} className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -154,8 +177,14 @@ export function CollectionSummary({ owned, ratings, catalog }: { owned: OwnedIte
       </div>
 
       <div className="col-span-2 rounded-xl border bg-card p-4 md:col-span-4">
-        <h2 className="text-sm font-medium">{t('collection.summary.addedChart')}</h2>
-        <AddedChart data={added} />
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <h2 className="text-sm font-medium">{t('collection.summary.activityChart')}</h2>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <Key color={ADDED_COLOR}>{t('collection.summary.added')}</Key>
+            <Key color={REMOVED_COLOR}>{t('collection.summary.removed')}</Key>
+          </div>
+        </div>
+        <ActivityChart data={activity} />
       </div>
     </section>
   );

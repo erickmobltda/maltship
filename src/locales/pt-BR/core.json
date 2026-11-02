@@ -96,9 +96,14 @@
       "ratedOf": "{{rated}} de {{total}} avaliados",
       "traits": "O que mais têm em comum",
       "traitsEmpty": "Adicione mais itens para ver o que têm em comum.",
-      "addedChart": "Inclusões por mês",
       "addedCount_one": "{{count}} inclusão",
-      "addedCount_other": "{{count}} inclusões"
+      "addedCount_other": "{{count}} inclusões",
+      "activityChart": "Inclusões e exclusões por mês",
+      "month": "Mês",
+      "added": "Inclusões",
+      "removed": "Exclusões",
+      "removedCount_one": "{{count}} exclusão",
+      "removedCount_other": "{{count}} exclusões"
     }
   },
   "feed": {
