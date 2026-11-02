@@ -1,6 +1,6 @@
 {
   "note": "Written by collector-app-blueprint tools/core-sync.mjs. Core files listed here must not be edited in this repo; see the blueprint docs/10-core-sync.md.",
-  "coreVersion": 6,
+  "coreVersion": 7,
   "nichePaths": [
     "README.md",
     "CHANGELOG.md",
@@ -19,7 +19,7 @@
     ".gitignore": "ddeff3705182b1339e9117e18e4a8f318120161d6a93cf914d94eedbc8413b0c",
     "AGENTS.md": "52893e0348319a8fa525e9b6da152eff46db8b61c8d8912add5e33bdcfb51e29",
     "CLAUDE.md": "b880771a572d517267d2666043dfe8570b7e9c257968d01b5c8430b98d2150ac",
-    "CORE_VERSION": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7",
+    "CORE_VERSION": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
     "START_HERE.en.md": "dd7a4d8ca9b76d06cea0fb1e5a9b5b9a961314914e6c98f99d215343bc5fa624",
     "START_HERE.md": "583a2d27cf8df2c8a5ec54cf56f533dc4ed18bb9fc63e9abca0696defd574533",
     "eslint.config.js": "13e9ce40de54b2a8344ea6f7a11036fc47f462a7529859fb4c3ad4d1ba2e174c",
@@ -53,7 +53,7 @@
     "src/features/auth/RequireAuth.tsx": "70b078311752e6ab2816c490306f1afdcd55c47cb6d92c72e25a91232046ecf5",
     "src/features/collection/CollectionPage.tsx": "23fae96dcd1cd1b0199f3bdb46fe7407b39691ba781c2d2dfbe5063c5ff3fd15",
     "src/features/collection/useCollection.ts": "f963d1b0e8fe3631582737fbdabbde6393085ae572d66ee3d259ac3acaa2cb0f",
-    "src/features/discover/DiscoverPage.tsx": "afca5c3b35f894c6b9929b62a72fc12d45f3649f82d435e9082d79481327b97c",
+    "src/features/discover/DiscoverPage.tsx": "c37e658802e9e3b30cd252f3199f8779b8a6079ce284bc2d83d526ab64f3b92b",
     "src/features/item/ItemPage.tsx": "17560b8eda1ff9d17b68e01e7c587dcf101259b2fd64ffe004cd580b00dc9f8e",
     "src/features/ratings/RatingCard.tsx": "b724a5e7b52c5a8e1d913c611babd929b850ff8fed12bc6fcd2a29a4498575f7",
     "src/features/ratings/RatingDialog.tsx": "53d4d2632b6f8f7f88c9a4a9eb086124bca041cd25cdf6043fc5d9e143fa80fb",
