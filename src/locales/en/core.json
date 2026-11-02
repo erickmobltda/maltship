@@ -84,7 +84,22 @@
     "rated": "Rated",
     "since": "since {{date}}",
     "wishlistEmpty": "Your wishlist is empty.",
-    "ratedEmpty": "You haven't rated anything yet."
+    "ratedEmpty": "You haven't rated anything yet.",
+    "visibleOnProfile": "Visible on profile:",
+    "search": "Search the collection",
+    "noResults": "Nothing found for this search.",
+    "summary": {
+      "title": "Collection summary",
+      "different_one": "{{count}} different",
+      "different_other": "{{count}} different",
+      "average": "Average rating",
+      "ratedOf": "{{rated}} of {{total}} rated",
+      "traits": "Most in common",
+      "traitsEmpty": "Add more items to see what they have in common.",
+      "addedChart": "Added per month",
+      "addedCount_one": "{{count}} added",
+      "addedCount_other": "{{count}} added"
+    }
   },
   "feed": {
     "title": "Feed",
