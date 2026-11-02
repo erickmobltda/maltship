@@ -17,7 +17,10 @@
     "inList_other": "{{count}} bottles",
     "showOnProfile": "Show my shelf on my profile",
     "empty": "Your shelf is empty.",
-    "hiddenNote": "Your shelf is hidden from others. Turn it on in Shelf or Settings."
+    "hiddenNote": "Your shelf is hidden from others. Turn it on in Shelf or Settings.",
+    "statCount_one": "Whisky on the shelf",
+    "statCount_other": "Whiskies on the shelf",
+    "searchPlaceholder": "Search your shelf: name, distillery, country…"
   },
   "attr": {
     "distillery": "Distillery",

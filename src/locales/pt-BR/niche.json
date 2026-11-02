@@ -17,7 +17,10 @@
     "inList_other": "{{count}} garrafas",
     "showOnProfile": "Mostrar minha estante no perfil",
     "empty": "Sua estante está vazia.",
-    "hiddenNote": "Sua estante está oculta para os outros. Ative em Estante ou Configurações."
+    "hiddenNote": "Sua estante está oculta para os outros. Ative em Estante ou Configurações.",
+    "statCount_one": "Whisky na estante",
+    "statCount_other": "Whiskies na estante",
+    "searchPlaceholder": "Buscar na estante: nome, destilaria, país…"
   },
   "attr": {
     "distillery": "Destilaria",
