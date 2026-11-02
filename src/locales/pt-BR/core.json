@@ -84,7 +84,22 @@
     "rated": "Avaliados",
     "since": "desde {{date}}",
     "wishlistEmpty": "Sua lista de desejos está vazia.",
-    "ratedEmpty": "Você ainda não avaliou nada."
+    "ratedEmpty": "Você ainda não avaliou nada.",
+    "visibleOnProfile": "Visível no perfil:",
+    "search": "Pesquisar na coleção",
+    "noResults": "Nada encontrado nesta pesquisa.",
+    "summary": {
+      "title": "Resumo da coleção",
+      "different_one": "{{count}} diferente",
+      "different_other": "{{count}} diferentes",
+      "average": "Avaliação média",
+      "ratedOf": "{{rated}} de {{total}} avaliados",
+      "traits": "O que mais têm em comum",
+      "traitsEmpty": "Adicione mais itens para ver o que têm em comum.",
+      "addedChart": "Inclusões por mês",
+      "addedCount_one": "{{count}} inclusão",
+      "addedCount_other": "{{count}} inclusões"
+    }
   },
   "feed": {
     "title": "Feed",
