@@ -79,7 +79,7 @@ export function DiscoverPage() {
         <p className="mt-1 text-sm text-muted-foreground">{t('niche:discover.subtitle', { count: all.length })}</p>
       </div>
 
-      <div className="sticky top-14 z-20 -mx-4 space-y-3 bg-background/85 px-4 py-2 backdrop-blur-xl md:-mx-8 md:top-0 md:px-8">
+      <div className="sticky top-14 z-20 -mx-4 space-y-3 bg-transparent px-4 py-2 md:-mx-8 md:top-0 md:px-8">
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
