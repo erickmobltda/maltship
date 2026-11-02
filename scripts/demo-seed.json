@@ -12,5 +12,6 @@
     "k1": { "itemId": "k1", "stars": 4.5, "tags": ["peat", "smoke", "sherry", "long_finish"], "notes": "Bonfire, dried fruit and a very long finish.", "experiencedOn": "2026-10-20" },
     "k4": { "itemId": "k4", "stars": 3.5, "tags": ["apple", "honey", "smooth"], "notes": "Easy and fruity. A good starting point.", "experiencedOn": "2026-09-28" },
     "k15": { "itemId": "k15", "stars": 4, "tags": ["vanilla", "caramel", "spice"], "notes": "", "experiencedOn": "2026-10-11" }
-  }
+  },
+  "users/removed": {}
 }
