@@ -108,7 +108,9 @@
     "ratings": "Avaliações",
     "nothingHere": "Nada aqui ainda.",
     "notFound": "Perfil não encontrado.",
-    "noRatings": "Nenhuma avaliação ainda."
+    "noRatings": "Nenhuma avaliação ainda.",
+    "zoomPhoto": "Ampliar a foto de {{name}}",
+    "photoOf": "Foto de {{name}}"
   },
   "settings": {
     "title": "Configurações",
@@ -118,7 +120,14 @@
     "privacy": "Privacidade",
     "ratingsPublic": "Avaliações são sempre públicas para quem está logado.",
     "language": "Idioma",
-    "signOut": "Sair"
+    "signOut": "Sair",
+    "photo": "Foto de perfil",
+    "addPhoto": "Adicionar foto",
+    "changePhoto": "Trocar foto",
+    "removePhoto": "Remover foto",
+    "photoSaved": "Foto salva.",
+    "photoRemoved": "Foto removida.",
+    "photoInvalid": "Não foi possível ler esta imagem. Tente outra."
   },
   "demo": {
     "socialDisabled": "Conta demo: os recursos sociais (perfis, seguir, curtidas, o feed compartilhado) estão desligados. Sua coleção e suas avaliações ficam só nesta conta.",

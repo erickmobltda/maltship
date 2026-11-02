@@ -18,6 +18,14 @@ export interface Profile {
   updatedAt: string;
 }
 
+// Apart from Profile so people and follower lists stay light.
+export interface Avatar {
+  niche: string;
+  uid: string;
+  image: string; // JPEG data URL (MAX_AVATAR_CHARS)
+  updatedAt: string;
+}
+
 export interface OwnedItem {
   niche: string;
   uid: string;

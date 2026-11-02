@@ -4,6 +4,8 @@ export const MAX_TAGS = 6;
 export const MAX_NOTES = 1000;
 export const MAX_NAME = 40;
 export const MAX_BIO = 160;
+export const MAX_AVATAR_CHARS = 200_000;
+export const AVATAR_SIZE = 512;
 
 export const isValidHandle = (h: string) => HANDLE_RE.test(h);
 

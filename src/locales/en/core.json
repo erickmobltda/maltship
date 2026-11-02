@@ -108,7 +108,9 @@
     "ratings": "Ratings",
     "nothingHere": "Nothing here yet.",
     "notFound": "Profile not found.",
-    "noRatings": "No ratings yet."
+    "noRatings": "No ratings yet.",
+    "zoomPhoto": "Enlarge {{name}}'s photo",
+    "photoOf": "{{name}}'s photo"
   },
   "settings": {
     "title": "Settings",
@@ -118,7 +120,14 @@
     "privacy": "Privacy",
     "ratingsPublic": "Ratings are always public to signed-in users.",
     "language": "Language",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "photo": "Profile photo",
+    "addPhoto": "Add photo",
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "photoSaved": "Photo saved.",
+    "photoRemoved": "Photo removed.",
+    "photoInvalid": "Couldn't read this image. Try another one."
   },
   "demo": {
     "socialDisabled": "Demo account: social features (profiles, follows, likes, the shared feed) are turned off. Your collection and ratings stay private to this account.",

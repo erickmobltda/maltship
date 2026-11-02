@@ -46,6 +46,7 @@ export const paths = {
   like: (ratingId: string, uid: string) => doc(db, ...A, 'ratings', ratingId, 'likes', uid),
   follows: () => collection(db, ...A, 'follows'),
   follow: (follower: string, followee: string) => doc(db, ...A, 'follows', `${follower}_${followee}`),
+  avatar: (uid: string) => doc(db, ...A, 'avatars', uid),
   demoRatings: (uid: string) => collection(db, ...A, 'users', uid, 'ratings'),
   demoRating: (uid: string, itemId: string) => doc(db, ...A, 'users', uid, 'ratings', itemId),
 };
