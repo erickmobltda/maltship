@@ -1,10 +1,13 @@
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Settings } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/toast';
+import { Avatar } from '@/components/Avatar';
 import { DemoBanner } from '@/components/DemoBanner';
 import { ItemCard } from '@/components/ItemCard';
 import { useCatalog } from '@/lib/catalog';
@@ -13,7 +16,7 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { useList } from '@/features/collection/useCollection';
 import { useUserRatings } from '@/features/ratings/useRatings';
 import { RatingCard } from '@/features/ratings/RatingCard';
-import { useFollowCounts, useHandleUid, useIsFollowing, useProfile, useToggleFollow } from './useSocial';
+import { useAvatar, useFollowCounts, useHandleUid, useIsFollowing, useProfile, useToggleFollow } from './useSocial';
 
 function Items({ uid, list, publicOnly }: { uid: string; list: 'owned' | 'wishlist'; publicOnly: boolean }) {
   const { t } = useTranslation();
@@ -42,6 +45,8 @@ export function ProfilePage() {
   const following = useIsFollowing(user?.uid, uid);
   const toggleFollow = useToggleFollow();
   const ratings = useUserRatings(uid);
+  const avatar = useAvatar(isDemo ? undefined : uid);
+  const [zoom, setZoom] = React.useState(false);
 
   if (isDemo) return <DemoBanner />;
   if (uidQuery.isLoading || loading) return <Skeleton className="h-40 rounded-xl" />;
@@ -63,9 +68,13 @@ export function ProfilePage() {
     <div className="space-y-5">
       <div className="rounded-2xl border bg-card p-5">
         <div className="flex items-start gap-4">
-          <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/15 font-display text-2xl font-semibold text-primary">
-            {profile.displayName.slice(0, 1).toUpperCase()}
-          </div>
+          {avatar ? (
+            <button type="button" onClick={() => setZoom(true)} aria-label={t('profile.zoomPhoto', { name: profile.displayName })} className="shrink-0 cursor-zoom-in rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <Avatar name={profile.displayName} image={avatar} />
+            </button>
+          ) : (
+            <Avatar name={profile.displayName} />
+          )}
           <div className="min-w-0 flex-1">
             <h1 className="break-words text-2xl font-semibold">{profile.displayName}</h1>
             <p className="text-sm text-muted-foreground">@{profile.handle}</p>
@@ -92,6 +101,13 @@ export function ProfilePage() {
           )}
         </div>
       </div>
+
+      <Dialog open={zoom && !!avatar} onOpenChange={setZoom}>
+        <DialogContent>
+          <DialogTitle className="pr-6 text-base">{profile.displayName}</DialogTitle>
+          {avatar ? <img src={avatar} alt={t('profile.photoOf', { name: profile.displayName })} className="mx-auto w-full max-w-[512px] rounded-xl" /> : null}
+        </DialogContent>
+      </Dialog>
 
       <Tabs defaultValue="ratings">
         <TabsList className="w-full">

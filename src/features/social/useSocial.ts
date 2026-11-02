@@ -7,7 +7,7 @@ import { db, paths } from '@/lib/firebase';
 import { chunk } from '@/lib/feed';
 import { useSnapshot } from '@/lib/useSnapshot';
 import { niche } from '@/niche/config';
-import type { Follow, Profile, WithId } from '@/lib/types';
+import type { Avatar, Follow, Profile, WithId } from '@/lib/types';
 
 const now = () => new Date().toISOString();
 
@@ -77,6 +77,32 @@ export async function updateProfile(current: WithId<Profile>, changes: Partial<P
       await b.commit();
     }
   }
+}
+
+// ---- Avatars ----
+
+/** Live profile picture by uid (null = none, so the initial shows). */
+export function useAvatar(uid: string | undefined) {
+  const [image, setImage] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    setImage(null);
+    if (!uid) return;
+    return onSnapshot(
+      paths.avatar(uid),
+      (s) => setImage(s.exists() ? (s.data() as Avatar).image : null),
+      () => setImage(null),
+    );
+  }, [uid]);
+  return image;
+}
+
+export async function saveAvatar(uid: string, image: string) {
+  const avatar: Avatar = { niche: niche.niche, uid, image, updatedAt: now() };
+  await setDoc(paths.avatar(uid), avatar);
+}
+
+export async function removeAvatar(uid: string) {
+  await deleteDoc(paths.avatar(uid));
 }
 
 // ---- Follows ----

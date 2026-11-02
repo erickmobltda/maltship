@@ -1,18 +1,81 @@
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { signOut } from 'firebase/auth';
-import { LogOut } from 'lucide-react';
+import { Camera, LogOut, Trash2 } from 'lucide-react';
 import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/toast';
+import { Avatar } from '@/components/Avatar';
 import { DemoBanner } from '@/components/DemoBanner';
 import { LanguageSwitch } from '@/components/LanguageSwitch';
+import { fileToAvatar } from '@/lib/avatarImage';
 import { MAX_BIO, MAX_NAME } from '@/lib/validation';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { updateProfile } from '@/features/social/useSocial';
+import { removeAvatar, saveAvatar, updateProfile, useAvatar } from '@/features/social/useSocial';
+
+function PhotoSection({ uid, name }: { uid: string; name: string }) {
+  const { t } = useTranslation();
+  const image = useAvatar(uid);
+  const input = React.useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = React.useState(false);
+
+  async function pick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setBusy(true);
+    try {
+      let data: string;
+      try {
+        data = await fileToAvatar(file);
+      } catch {
+        toast.error(t('settings.photoInvalid'));
+        return;
+      }
+      await saveAvatar(uid, data);
+      toast.success(t('settings.photoSaved'));
+    } catch {
+      toast.error(t('common.error'));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function remove() {
+    setBusy(true);
+    try {
+      await removeAvatar(uid);
+      toast.success(t('settings.photoRemoved'));
+    } catch {
+      toast.error(t('common.error'));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3 rounded-xl border bg-card p-4">
+      <h2 className="text-lg font-semibold">{t('settings.photo')}</h2>
+      <div className="flex flex-wrap items-center gap-4">
+        <Avatar name={name} image={image} className="size-20 text-4xl" />
+        <div className="flex flex-wrap gap-2">
+          <input ref={input} type="file" accept="image/*" className="hidden" aria-label={t('settings.photo')} onChange={pick} />
+          <Button type="button" variant="outline" size="sm" disabled={busy} onClick={() => input.current?.click()}>
+            <Camera /> {busy ? t('common.loading') : t(image ? 'settings.changePhoto' : 'settings.addPhoto')}
+          </Button>
+          {image ? (
+            <Button type="button" variant="outline" size="sm" disabled={busy} onClick={remove}>
+              <Trash2 /> {t('settings.removePhoto')}
+            </Button>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function SettingsPage() {
   const { t } = useTranslation();
@@ -51,6 +114,8 @@ export function SettingsPage() {
       </div>
 
       {isDemo ? <DemoBanner /> : null}
+
+      {profile && !isDemo ? <PhotoSection uid={profile.uid} name={profile.displayName} /> : null}
 
       {profile ? (
         <form onSubmit={save} className="space-y-3 rounded-xl border bg-card p-4">
