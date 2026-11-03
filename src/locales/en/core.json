@@ -65,6 +65,7 @@
     "less": "One less",
     "more": "One more",
     "specs": "Details",
+    "photoCredit": "Photo: {{author}} · {{license}}",
     "ratings": "Ratings",
     "signInToSee": "to see the ratings.",
     "noRatings": "No ratings yet. Be the first.",

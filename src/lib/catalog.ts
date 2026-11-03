@@ -12,10 +12,18 @@ export interface Item {
   image: number | null;
   /** Background colour of an opaque image, to fill the space around it. */
   imageBg: string | null;
+  /** Who made the photo and under which licence, when its licence asks for credit. */
+  imageCredit: ImageCredit | null;
   attrs: Record<string, AttrValue>;
   /** Lower-cased, accent-free text used by search. */
   haystack: string;
   bestScore: number | null;
+}
+
+export interface ImageCredit {
+  author: string;
+  license: string;
+  url: string;
 }
 
 export interface CatalogFile {
@@ -66,11 +74,19 @@ export function decodeCatalog(file: CatalogFile, config: NicheConfig = niche): I
       scores,
       image: (raw.image as number | null | undefined) ?? null,
       imageBg: (raw.imageBg as string | null | undefined) ?? null,
+      imageCredit: decodeCredit(raw.imageCredit),
       attrs,
       haystack: fold([name, ...searchable.map((k) => asText(attrs[k]))].join(' ')),
       bestScore: scores.length ? Math.max(...scores) : null,
     };
   });
+}
+
+/** [author, licence, source url] in the file; older catalogs have no column. */
+function decodeCredit(raw: unknown): ImageCredit | null {
+  if (!Array.isArray(raw) || raw.length < 3) return null;
+  const [author, license, url] = raw.map((v) => String(v ?? ''));
+  return author || license ? { author, license, url } : null;
 }
 
 const matchesFacet = (value: AttrValue, wanted: string) => (Array.isArray(value) ? value.includes(wanted) : asText(value) === wanted);
@@ -157,11 +173,15 @@ export function filtersToParams(f: Filters): URLSearchParams {
 }
 
 /** i18n key + options for one attribute value, or plain text when it isn't translated. */
-export function attrDisplay(a: AttributeDef, v: AttrValue): { key: string; opts?: Record<string, unknown> } | { text: string } | null {
+export function attrDisplay(
+  a: AttributeDef,
+  v: AttrValue,
+): { key: string; opts?: Record<string, unknown> } | { keys: string[] } | { text: string } | null {
   if (v == null || v === '' || (Array.isArray(v) && !v.length)) return null;
-  if (a.type === 'enum') return { key: `niche:enum.${a.key}.${v}` };
+  if (a.type === 'enum' || (a.enumValues && typeof v === 'string')) return { key: `niche:enum.${a.key}.${v}` };
   if (a.type === 'number' && v === 0 && a.zeroLabel) return { key: `niche:zero.${a.key}` };
   if (a.type === 'number' && a.unit) return { key: `core:unit.${a.unit}`, opts: { value: v } };
+  if (Array.isArray(v) && a.enumValues) return { keys: v.map((x) => `niche:enum.${a.key}.${x}`) };
   return { text: Array.isArray(v) ? v.join(', ') : String(v) };
 }
 

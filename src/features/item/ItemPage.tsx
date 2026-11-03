@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Heart, Minus, Plus, Archive, PenLine } from 'lucide-react';
-import { useCatalog } from '@/lib/catalog';
+import { imageUrl, useCatalog } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemImage } from '@/components/ItemImage';
 import { InfiniteList } from '@/components/InfiniteList';
@@ -119,6 +119,17 @@ export function ItemPage() {
             </div>
           </div>
         </div>
+        {item.imageCredit && imageUrl(item) ? (
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            {item.imageCredit.url ? (
+              <a href={item.imageCredit.url} target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline">
+                {t('item.photoCredit', { author: item.imageCredit.author, license: item.imageCredit.license })}
+              </a>
+            ) : (
+              t('item.photoCredit', { author: item.imageCredit.author, license: item.imageCredit.license })
+            )}
+          </p>
+        ) : null}
 
         <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3">
           <Button onClick={() => ready() && setRateOpen(true)}>

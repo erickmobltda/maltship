@@ -62,7 +62,7 @@ export function DiscoverPage() {
   const all = React.useMemo(() => (catalog ? [...catalog.values()] : []), [catalog]);
   const facetDefs = niche.attributes.filter((a) => a.facet);
   const options = React.useMemo(
-    () => Object.fromEntries(facetDefs.map((a) => [a.key, a.type === 'enum' ? a.enumValues ?? [] : facetValues(all, a.key)])),
+    () => Object.fromEntries(facetDefs.map((a) => [a.key, a.enumValues ? a.enumValues : facetValues(all, a.key)])),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [all],
   );
