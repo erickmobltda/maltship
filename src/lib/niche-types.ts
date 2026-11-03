@@ -5,6 +5,7 @@ export type AttrType = 'text' | 'enum' | 'number' | 'list';
 export interface AttributeDef {
   key: string;
   type: AttrType;
+  /** The allowed values of an enum, or of each entry of a list; both are shown translated. */
   enumValues?: string[];
   searchable?: boolean;
   facet?: 'chips' | 'select';

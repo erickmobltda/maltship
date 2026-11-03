@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { NicheConfig } from './niche-types';
-import { avgStars, decodeCatalog, decodeItemStats, facetValues, filtersFromParams, filtersToParams, search, sortResults, NO_FILTERS } from './catalog';
+import type { AttributeDef, NicheConfig } from './niche-types';
+import { attrDisplay, avgStars, decodeCatalog, decodeItemStats, facetValues, filtersFromParams, filtersToParams, search, sortResults, NO_FILTERS } from './catalog';
 
 const config: NicheConfig = {
   niche: 'test',
@@ -41,6 +41,23 @@ describe('catalog', () => {
     expect(items[1].imageBg).toBeNull();
     const withBg = decodeCatalog({ keys: ['id', 'name', 'image', 'imageBg'], rows: [['x1', 'A', 7, '#fefefe'], ['x2', 'B', 8, null]] }, config);
     expect(withBg.map((i) => i.imageBg)).toEqual(['#fefefe', null]);
+  });
+
+  it('reads the photo credit, which older catalogs do not have', () => {
+    expect(items[0].imageCredit).toBeNull();
+    const withCredit = decodeCatalog(
+      { keys: ['id', 'name', 'image', 'imageCredit'], rows: [['x1', 'A', 7, ['Ann', 'CC BY-SA 3.0', 'https://e.org/a']], ['x2', 'B', 8, null]] },
+      config,
+    );
+    expect(withCredit.map((i) => i.imageCredit)).toEqual([{ author: 'Ann', license: 'CC BY-SA 3.0', url: 'https://e.org/a' }, null]);
+  });
+
+  it('translates every value of a list with fixed values, and leaves free lists as text', () => {
+    const fixed: AttributeDef = { key: 'notes', type: 'list', enumValues: ['oak', 'fruit'] };
+    const key = (v: string) => `niche:enum.notes.${v}`;
+    expect(attrDisplay(fixed, ['oak', 'fruit'])).toEqual({ keys: [key('oak'), key('fruit')] });
+    expect(attrDisplay(fixed, 'oak')).toEqual({ key: key('oak') });
+    expect(attrDisplay({ key: 'notes', type: 'list' }, ['oak', 'fruit'])).toEqual({ text: 'oak, fruit' });
   });
 
   it('search ignores accents and case and needs every word', () => {

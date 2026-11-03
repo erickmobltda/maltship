@@ -65,6 +65,7 @@
     "less": "Um a menos",
     "more": "Um a mais",
     "specs": "Detalhes",
+    "photoCredit": "Foto: {{author}} · {{license}}",
     "ratings": "Avaliações",
     "signInToSee": "para ver as avaliações.",
     "noRatings": "Nenhuma avaliação ainda. Seja o primeiro.",
