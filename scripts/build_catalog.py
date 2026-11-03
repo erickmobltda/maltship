@@ -2,8 +2,9 @@
 """Build public/catalog.json from data/items.json (or data/sample.json).
 
 Columns follow the attribute order in src/niche/niche.json, plus id, name,
-scores and image. Ids are stable: an item may carry its own "id"; otherwise
+scores, image and imageBg. Ids are stable: an item may carry its own "id"; otherwise
 data/ids.json maps its natural "key" to an id, and new items get the next number.
+imageBg comes from data/image_backgrounds.json (image number -> colour), if present.
 
     python3 scripts/build_catalog.py
 """
@@ -16,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 NICHE = json.loads((ROOT / "src/niche/niche.json").read_text())
 SOURCE = next((p for p in (ROOT / "data/items.json", ROOT / "data/sample.json") if p.exists()), ROOT / "data/items.json")
 IDS = ROOT / "data/ids.json"
+BACKGROUNDS = ROOT / "data/image_backgrounds.json"
 OUT = ROOT / "public/catalog.json"
 PREFIX = NICHE["idPrefix"]
 
@@ -36,9 +38,10 @@ def normalize(attr, value):
 def main():
     rows_in = json.loads(SOURCE.read_text())
     ids = json.loads(IDS.read_text()) if IDS.exists() else {}
+    backgrounds = json.loads(BACKGROUNDS.read_text()) if BACKGROUNDS.exists() else {}
     next_n = max((int(re.sub(r"\D", "", v)) for v in ids.values()), default=0) + 1
     attrs = NICHE["attributes"]
-    keys = ["id", "name"] + [a["key"] for a in attrs] + ["scores", "image"]
+    keys = ["id", "name"] + [a["key"] for a in attrs] + ["scores", "image", "imageBg"]
     dropped = Counter()
     rows = []
     for item in rows_in:
@@ -54,12 +57,12 @@ def main():
                 next_n += 1
             item_id = ids[key]
         rows.append([item_id, name] + [normalize(a, item.get(a["key"])) for a in attrs]
-                    + [item.get("scores", []), item.get("image")])
+                    + [item.get("scores", []), item.get("image"), backgrounds.get(str(item.get("image")))])
     rows.sort(key=lambda r: (re.sub(r"\d", "", r[0]), int(re.sub(r"\D", "", r[0]) or 0)))
     OUT.write_text(json.dumps({"keys": keys, "rows": rows}, ensure_ascii=False, separators=(",", ":")) + "\n")
     if ids:
         IDS.write_text(json.dumps(dict(sorted(ids.items(), key=lambda kv: int(re.sub(r"\D", "", kv[1])))), indent=2) + "\n")
-    print(f"read {len(rows_in)} · wrote {len(rows)} · with images {sum(1 for r in rows if r[-1])}")
+    print(f"read {len(rows_in)} · wrote {len(rows)} · with images {sum(1 for r in rows if r[-2])}")
     for reason, n in dropped.items():
         print(f"dropped {n}: {reason}")
 

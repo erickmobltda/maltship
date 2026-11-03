@@ -37,6 +37,12 @@ describe('catalog', () => {
     expect(items[1].image).toBe(7);
   });
 
+  it('reads the image background colour, which older catalogs do not have', () => {
+    expect(items[1].imageBg).toBeNull();
+    const withBg = decodeCatalog({ keys: ['id', 'name', 'image', 'imageBg'], rows: [['x1', 'A', 7, '#fefefe'], ['x2', 'B', 8, null]] }, config);
+    expect(withBg.map((i) => i.imageBg)).toEqual(['#fefefe', null]);
+  });
+
   it('search ignores accents and case and needs every word', () => {
     expect(search(items, { ...NO_FILTERS, text: 'chateau eme' }).map((i) => i.id)).toEqual(['x1']);
     expect(search(items, { ...NO_FILTERS, text: 'MAISON' }).map((i) => i.id)).toEqual(['x1', 'x3']);
