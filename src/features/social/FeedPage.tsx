@@ -15,7 +15,7 @@ import { useFollows } from './useSocial';
 function List({ name, data, loading, empty, more }: { name: string; data: WithId<Rating>[]; loading: boolean; empty: React.ReactNode; more?: () => void }) {
   if (loading && !data.length) return <Skeleton className="h-40 rounded-xl" />;
   if (!data.length) return <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{empty}</div>;
-  return <InfiniteList name={name} items={data} loading={loading} more={more} renderItem={(r) => <RatingCard key={r.id} rating={r} showItem />} />;
+  return <InfiniteList name={name} items={data} className="grid gap-3" loading={loading} more={more} renderItem={(r) => <RatingCard key={r.id} rating={r} split />} />;
 }
 
 function FollowingTab() {
