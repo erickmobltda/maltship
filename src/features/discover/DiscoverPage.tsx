@@ -2,13 +2,15 @@ import * as React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpDown, Search, SlidersHorizontal, X } from 'lucide-react';
-import { facetValues, filtersFromParams, filtersToParams, search, SORT_MODES, sortResults, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
+import { facetValues, filtersFromParams, filtersToParams, search, SORT_MODES, sortResults, STAT_SORTS, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemCard } from '@/components/ItemCard';
 import { useAttrText } from '@/components/AttrText';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ItemPopularity } from './ItemPopularity';
+import { useItemStats } from './useItemStats';
 
 const PAGE = 48;
 
@@ -50,6 +52,7 @@ export function DiscoverPage() {
   const { t } = useTranslation();
   const text = useAttrText();
   const { data: catalog, isLoading, error } = useCatalog();
+  const { data: stats } = useItemStats();
   const [params, setParams] = useSearchParams();
   const [shown, setShown] = React.useState(PAGE);
   const [showFilters, setShowFilters] = React.useState(false);
@@ -68,8 +71,11 @@ export function DiscoverPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [all],
   );
+  // A shared link can ask for a popularity sort while there are no stats: it then behaves as the default.
+  const sortModes = SORT_MODES.filter((s) => stats || !STAT_SORTS.includes(s));
+  const sort = sortModes.includes(filters.sort) ? filters.sort : 'featured';
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const results = React.useMemo(() => sortResults(search(all, filters), filters.sort), [all, params]);
+  const results = React.useMemo(() => sortResults(search(all, filters), sort, stats), [all, params, sort, stats]);
   const activeFilters = Object.values(filters.facets).filter(Boolean).length + (filters.minScore ? 1 : 0);
 
   return (
@@ -164,14 +170,14 @@ export function DiscoverPage() {
             <div className="relative shrink-0">
               <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
               <select
-                value={filters.sort}
+                value={sort}
                 onChange={(e) => apply({ ...filters, sort: e.target.value as SortMode })}
                 aria-label={t('discover.sortBy')}
                 className="h-9 rounded-full border bg-card pl-8 pr-2 text-xs outline-none focus:border-primary"
               >
-                {SORT_MODES.map((s) => (
+                {sortModes.map((s) => (
                   <option key={s} value={s}>
-                    {t(`discover.sort.${s}`)}
+                    {s === 'owned' ? t('niche:owned.sortMost') : t(`discover.sort.${s}`)}
                   </option>
                 ))}
               </select>
@@ -179,7 +185,7 @@ export function DiscoverPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.slice(0, shown).map((it) => (
-              <ItemCard key={it.id} item={it} />
+              <ItemCard key={it.id} item={it} extra={stats ? <ItemPopularity stats={stats.get(it.id)} /> : null} />
             ))}
           </div>
           {shown < results.length ? (
