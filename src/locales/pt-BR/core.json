@@ -104,14 +104,26 @@
       "ratedOf": "{{rated}} de {{total}} avaliados",
       "traits": "O que mais têm em comum",
       "traitsEmpty": "Adicione mais itens para ver o que têm em comum.",
-      "addedCount_one": "{{count}} inclusão",
-      "addedCount_other": "{{count}} inclusões",
-      "activityChart": "Inclusões e exclusões por mês",
-      "month": "Mês",
-      "added": "Inclusões",
-      "removed": "Exclusões",
-      "removedCount_one": "{{count}} exclusão",
-      "removedCount_other": "{{count}} exclusões"
+      "addedCount_one": "{{count}} incluído",
+      "addedCount_other": "{{count}} incluídos",
+      "added": "Incluídos",
+      "removed": "Removidos",
+      "removedCount_one": "{{count}} removido",
+      "removedCount_other": "{{count}} removidos",
+      "period": "Período",
+      "groupBy": "Ver por",
+      "months_one": "{{count}} mês",
+      "months_other": "{{count}} meses",
+      "oneMonth": "Mês",
+      "custom": "Personalizado",
+      "from": "De",
+      "to": "Até",
+      "noActivity": "Nada neste período",
+      "bucket": {
+        "month": "Mensal",
+        "week": "Semanal",
+        "day": "Diária"
+      }
     }
   },
   "feed": {
