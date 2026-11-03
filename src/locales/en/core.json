@@ -46,8 +46,7 @@
       "featured": "Featured",
       "name": "Name A–Z",
       "stars": "Best rated",
-      "wished": "Most wanted",
-      "mentions": "Most mentioned"
+      "wished": "Most wanted"
     },
     "empty": "Nothing matches these filters.",
     "results_one": "{{count}} result",
@@ -185,9 +184,6 @@
     "ratings_other": "{{count}} community ratings",
     "wished_one": "{{count}} person wants it",
     "wished_other": "{{count}} people want it",
-    "mentions_one": "{{count}} mention in the feed",
-    "mentions_other": "{{count}} mentions in the feed",
-    "noWished": "No wishlist data yet",
-    "noMentions": "No feed mentions data yet"
+    "noWished": "No wishlist data yet"
   }
 }

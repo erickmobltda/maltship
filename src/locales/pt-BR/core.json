@@ -46,8 +46,7 @@
       "featured": "Destaques",
       "name": "Nome A–Z",
       "stars": "Mais bem avaliados",
-      "wished": "Mais desejados",
-      "mentions": "Mais citados no feed"
+      "wished": "Mais desejados"
     },
     "empty": "Nada combina com esses filtros.",
     "results_one": "{{count}} resultado",
@@ -185,9 +184,6 @@
     "ratings_other": "{{count}} avaliações da comunidade",
     "wished_one": "{{count}} pessoa quer",
     "wished_other": "{{count}} pessoas querem",
-    "mentions_one": "{{count}} citação no feed",
-    "mentions_other": "{{count}} citações no feed",
-    "noWished": "Ainda sem dados de desejos",
-    "noMentions": "Ainda sem dados de citações no feed"
+    "noWished": "Ainda sem dados de desejos"
   }
 }

@@ -31,10 +31,10 @@ export interface CatalogFile {
   rows: unknown[][];
 }
 
-export const SORT_MODES = ['featured', 'name', 'stars', 'owned', 'wished', 'mentions'] as const;
+export const SORT_MODES = ['featured', 'name', 'stars', 'owned', 'wished'] as const;
 export type SortMode = (typeof SORT_MODES)[number];
 /** Sort modes that need the popularity document. */
-export const STAT_SORTS: readonly SortMode[] = ['stars', 'owned', 'wished', 'mentions'];
+export const STAT_SORTS: readonly SortMode[] = ['stars', 'owned', 'wished'];
 
 /** One item's entry in apps/<APP>/stats/items. A missing field means "no data", not zero. */
 export interface ItemStats {
@@ -42,7 +42,6 @@ export interface ItemStats {
   wished?: number;
   ratings?: number;
   starsSum?: number;
-  mentions?: number;
 }
 export type ItemStatsMap = Map<string, ItemStats>;
 
@@ -104,7 +103,7 @@ export function search(items: Item[], f: Filters): Item[] {
 
 const byName = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
 
-const STAT_FIELDS = ['owned', 'wished', 'ratings', 'starsSum', 'mentions'] as const;
+const STAT_FIELDS = ['owned', 'wished', 'ratings', 'starsSum'] as const;
 
 /** Keeps only positive numbers, so anything else in the document reads as "no data". */
 export function decodeItemStats(doc: unknown): ItemStatsMap {
