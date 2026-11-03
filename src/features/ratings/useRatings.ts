@@ -7,8 +7,6 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { niche } from '@/niche/config';
 import type { Profile, Rating } from '@/lib/types';
 
-export const FEED_SIZE = 40;
-
 // The demo's ratings live in its own data (users/{uid}/ratings/{itemId}): they stay out of
 // everyone's feed, and the demo sees only its own.
 export function useItemRatings(itemId: string) {
@@ -22,43 +20,43 @@ export function useItemRatings(itemId: string) {
   return useSnapshot<Rating>(q);
 }
 
-/** `all` drops the cap, for totals that must see every rating. */
-export function useUserRatings(uid: string | undefined, all = false) {
+/** Without `max` there is no cap, for totals that must see every rating. */
+export function useUserRatings(uid: string | undefined, max?: number) {
   const { user, isDemo } = useAuth();
   const q = React.useMemo(() => {
     if (!user || !uid) return null;
     return isDemo && uid === user.uid
       ? query(paths.demoRatings(uid), orderBy('experiencedOn', 'desc'))
-      : all
-        ? query(paths.ratings(), where('uid', '==', uid), orderBy('experiencedOn', 'desc'))
-        : query(paths.ratings(), where('uid', '==', uid), orderBy('experiencedOn', 'desc'), limit(50));
-  }, [user, isDemo, uid, all]);
+      : max
+        ? query(paths.ratings(), where('uid', '==', uid), orderBy('experiencedOn', 'desc'), limit(max))
+        : query(paths.ratings(), where('uid', '==', uid), orderBy('experiencedOn', 'desc'));
+  }, [user, isDemo, uid, max]);
   return useSnapshot<Rating>(q);
 }
 
-export function useEveryoneFeed() {
+export function useEveryoneFeed(max: number) {
   const { user, isDemo } = useAuth();
   const q = React.useMemo(() => {
     if (!user) return null;
     return isDemo
-      ? query(paths.demoRatings(user.uid), orderBy('updatedAt', 'desc'), limit(FEED_SIZE))
-      : query(paths.ratings(), orderBy('updatedAt', 'desc'), limit(FEED_SIZE));
-  }, [user, isDemo]);
+      ? query(paths.demoRatings(user.uid), orderBy('updatedAt', 'desc'), limit(max))
+      : query(paths.ratings(), orderBy('updatedAt', 'desc'), limit(max));
+  }, [user, isDemo, max]);
   return useSnapshot<Rating>(q);
 }
 
 /** Ratings from the people I follow plus my own, newest first (fan-in on read, 30 uids per query). */
-export function useFollowingFeed(followees: string[]) {
+export function useFollowingFeed(followees: string[], max: number) {
   const { user } = useAuth();
   const key = followees.join(',');
   const queries = React.useMemo(() => {
     if (!user) return [];
     const uids = [...new Set([user.uid, ...followees])];
-    return chunk(uids).map((uids) => query(paths.ratings(), where('uid', 'in', uids), orderBy('updatedAt', 'desc'), limit(FEED_SIZE)));
+    return chunk(uids).map((uids) => query(paths.ratings(), where('uid', 'in', uids), orderBy('updatedAt', 'desc'), limit(max)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, key]);
+  }, [user, key, max]);
   const res = useSnapshots<Rating>(queries);
-  const data = React.useMemo(() => mergeFeeds(res.data, FEED_SIZE), [res.data]);
+  const data = React.useMemo(() => mergeFeeds(res.data, max), [res.data, max]);
   return { data, loading: res.loading, tooMany: queries.length > 10 };
 }
 

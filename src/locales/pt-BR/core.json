@@ -51,8 +51,7 @@
     },
     "empty": "Nada combina com esses filtros.",
     "results_one": "{{count}} resultado",
-    "results_other": "{{count}} resultados",
-    "more": "Mostrar mais"
+    "results_other": "{{count}} resultados"
   },
   "item": {
     "notFound": "Este item não está no catálogo.",

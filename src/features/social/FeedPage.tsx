@@ -5,35 +5,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { DemoBanner } from '@/components/DemoBanner';
+import { InfiniteList, usePageLimit } from '@/components/InfiniteList';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { useEveryoneFeed, useFollowingFeed } from '@/features/ratings/useRatings';
 import { RatingCard } from '@/features/ratings/RatingCard';
 import type { Rating, WithId } from '@/lib/types';
 import { useFollows } from './useSocial';
 
-function List({ data, loading, empty }: { data: WithId<Rating>[]; loading: boolean; empty: React.ReactNode }) {
+function List({ name, data, loading, empty, more }: { name: string; data: WithId<Rating>[]; loading: boolean; empty: React.ReactNode; more?: () => void }) {
   if (loading && !data.length) return <Skeleton className="h-40 rounded-xl" />;
   if (!data.length) return <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{empty}</div>;
-  return (
-    <div className="space-y-3">
-      {data.map((r) => (
-        <RatingCard key={r.id} rating={r} showItem />
-      ))}
-    </div>
-  );
+  return <InfiniteList name={name} items={data} loading={loading} more={more} renderItem={(r) => <RatingCard key={r.id} rating={r} showItem />} />;
 }
 
 function FollowingTab() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const follows = useFollows('follower', user?.uid);
-  const feed = useFollowingFeed(follows.data.map((f) => f.followee));
+  const { limit, moreIf } = usePageLimit('following');
+  const feed = useFollowingFeed(follows.data.map((f) => f.followee), limit);
   return (
     <>
       {feed.tooMany ? <p className="mb-3 text-xs text-muted-foreground">{t('feed.tooMany')}</p> : null}
       <List
+        name="following"
         data={feed.data}
         loading={follows.loading || feed.loading}
+        more={moreIf(feed.data.length)}
         empty={
           <>
             {t('feed.followingEmpty')}{' '}
@@ -50,7 +48,9 @@ function FollowingTab() {
 export function FeedPage() {
   const { t } = useTranslation();
   const { isDemo } = useAuth();
-  const everyone = useEveryoneFeed();
+  const { limit, moreIf } = usePageLimit('everyone');
+  const everyone = useEveryoneFeed(limit);
+  const everyoneList = <List name="everyone" data={everyone.data} loading={everyone.loading} empty={t('feed.empty')} more={moreIf(everyone.data.length)} />;
 
   return (
     <div className="space-y-5">
@@ -70,7 +70,7 @@ export function FeedPage() {
       {isDemo ? (
         <>
           <DemoBanner />
-          <List data={everyone.data} loading={everyone.loading} empty={t('feed.empty')} />
+          {everyoneList}
         </>
       ) : (
         <Tabs defaultValue="following">
@@ -86,7 +86,7 @@ export function FeedPage() {
             <FollowingTab />
           </TabsContent>
           <TabsContent value="everyone" className="mt-4">
-            <List data={everyone.data} loading={everyone.loading} empty={t('feed.empty')} />
+            {everyoneList}
           </TabsContent>
         </Tabs>
       )}

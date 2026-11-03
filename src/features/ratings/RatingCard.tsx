@@ -36,7 +36,7 @@ export function RatingCard({ rating, showItem }: { rating: WithId<Rating>; showI
   };
 
   return (
-    <article className="rounded-xl border bg-card p-4 animate-fade-in">
+    <article className="flex min-w-0 flex-col rounded-xl border bg-card p-4 animate-fade-in">
       <div className="flex items-center gap-3">
         <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary">
           {(rating.displayName || '?').slice(0, 1).toUpperCase()}
@@ -67,7 +67,7 @@ export function RatingCard({ rating, showItem }: { rating: WithId<Rating>; showI
       ) : null}
       {rating.notes ? <p className="mt-2 whitespace-pre-line break-words text-sm text-muted-foreground">{rating.notes}</p> : null}
       {!isDemo ? (
-        <div className="mt-3 flex justify-end">
+        <div className="mt-auto flex justify-end pt-3">
           <button
             type="button"
             onClick={onLike}

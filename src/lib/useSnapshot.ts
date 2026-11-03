@@ -24,13 +24,16 @@ export function useSnapshot<T>(query: Query<DocumentData> | null): { data: (T & 
 /** Several live queries at once (e.g. one per chunk of 30 uids); `queries` must be memoised. */
 export function useSnapshots<T>(queries: Query<DocumentData>[]): { data: (T & { id: string })[][]; loading: boolean } {
   const [state, setState] = React.useState<{ data: (T & { id: string })[][]; loading: boolean }>({ data: [], loading: queries.length > 0 });
+  const latest = React.useRef(state.data);
+  latest.current = state.data;
 
   React.useEffect(() => {
     if (!queries.length) {
       setState({ data: [], loading: false });
       return;
     }
-    const results: (T & { id: string })[][] = queries.map(() => []);
+    // Keep what is on screen until each new query answers (a longer list shouldn't blink).
+    const results: (T & { id: string })[][] = queries.map((_, i) => latest.current[i] ?? []);
     const ready = new Set<number>();
     setState((s) => ({ ...s, loading: true }));
     const unsubs = queries.map((q, i) =>
