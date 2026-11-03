@@ -64,7 +64,8 @@ Exemplos:
 - "Adicione mais 5 whiskies ao catálogo: [lista]. Mantenha o formato atual."
 - "Troque a cor principal deste app por um azul mais escuro."
 - "Em todos os apps, mostre o número de itens no perfil do usuário." (mudança no core)
-- "Quero guardar o 'preço pago' nos itens que a pessoa tem." (dado novo → o Claude prepara a proposta e pede para você falar com o Erick sobre as regras)
+- "Quero guardar um histórico dos itens que a pessoa tirou da coleção, só para ela ver." (dado novo privado → o Claude faz, sem depender do Erick)
+- "Quero guardar o 'preço pago' nos itens que a pessoa tem." (dado novo na coleção, que outras pessoas podem ver → o Claude prepara a proposta e pede para você falar com o Erick sobre as regras)
 
 O Claude monta e te mostra rodando. Quando estiver do seu gosto, diga **"publicar"**. O Claude confirma e então:
 - testa a mudança em todos os apps;
@@ -81,7 +82,7 @@ Nos testes, lembre que o app no seu computador usa o banco de dados **de verdade
 | Você (com o Claude) | Erick |
 |---|---|
 | Criar branches, mudar código e textos, abrir PRs, neste app e no blueprint | Firebase, domínios, senhas e chaves, servidores |
-| Publicar mudanças: o Claude testa em todos os apps, depois aceita e coloca no ar (a skill `publish`) | Regras de segurança (`erickmob-api`): dados novos no Firestore |
+| Publicar mudanças: o Claude testa em todos os apps, depois aceita e coloca no ar (a skill `publish`) | Regras de segurança (`erickmob-api`): dados novos no Firestore que outras pessoas leem ou que ficam fora de `users/{uid}/`. Dados privados em `users/{uid}/` não precisam do Erick |
 | Adicionar ou corrigir itens do catálogo, traduções, cores | Criar contas, restaurar a conta demo em produção |
 | Propor mudanças no core (no blueprint) | Criar um app novo ou um repositório novo |
 
