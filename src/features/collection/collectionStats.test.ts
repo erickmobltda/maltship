@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { AttributeDef } from '@/lib/niche-types';
-import { activitySeries, averageRating, countUnits, defaultBucket, earliestDay, lastMonths, toDay, topTraits } from './collectionStats';
+import { activitySeries, averageRating, countUnits, defaultBucket, defaultPeriod, earliestDay, lastMonths, toDay, topTraits } from './collectionStats';
 
 describe('countUnits', () => {
   it('adds the quantities', () => {
@@ -25,6 +25,17 @@ describe('activity', () => {
     expect(defaultBucket(lastMonths(6, now))).toBe('month');
     expect(defaultBucket(lastMonths(3, now))).toBe('week');
     expect(defaultBucket(lastMonths(1, now))).toBe('day');
+  });
+  it('opens on the shortest period with activity', () => {
+    const periods = [12, 6, 3, 1] as const;
+    const added = (m: number, d = 10) => [{ addedAt: at(2026, m, d) }];
+    expect(defaultPeriod(periods, [], [], now)).toBe(1);
+    expect(defaultPeriod(periods, added(3), [], now)).toBe(1);
+    expect(defaultPeriod(periods, added(2, 28), [], now)).toBe(3);
+    expect(defaultPeriod(periods, [{ addedAt: at(2025, 11, 10) }], [], now)).toBe(6);
+    expect(defaultPeriod(periods, [{ addedAt: at(2025, 5, 10) }], [], now)).toBe(12);
+    expect(defaultPeriod(periods, [], [{ addedAt: at(2020, 1, 1), removedAt: at(2026, 3, 2) }], now)).toBe(1);
+    expect(defaultPeriod(periods, [{ addedAt: at(2020, 1, 1) }], [], now)).toBe(1);
   });
   it('counts each item in its month and ignores older ones', () => {
     const owned = [{ addedAt: at(2026, 3, 1) }, { addedAt: at(2026, 3, 14, 23) }, { addedAt: at(2026, 1, 10) }, { addedAt: at(2020, 1, 10) }];

@@ -36,6 +36,13 @@ export function lastMonths(months: number, now = new Date()): DayRange {
   return { from: makeDay(now.getFullYear(), now.getMonth() - months + 1, 1), to: toDay(now) };
 }
 
+/** The shortest period, in months, with any activity: a new collection opens on the current month, and an idle one doesn't open empty. */
+export function defaultPeriod<T extends number>(periods: readonly T[], owned: Pick<OwnedItem, 'addedAt'>[], removed: Pick<RemovedItem, 'addedAt' | 'removedAt'>[], now = new Date()): T {
+  const shortestFirst = [...periods].sort((a, b) => a - b);
+  const days = [...owned, ...removed].map((o) => toDay(o.addedAt)).concat(removed.map((r) => toDay(r.removedAt)));
+  return shortestFirst.find((months) => days.some((day) => day >= lastMonths(months, now).from)) ?? shortestFirst[0];
+}
+
 /** A grouping that stays readable for the length of the range. */
 export function defaultBucket(range: DayRange): Bucket {
   const days = dayCount(range);
