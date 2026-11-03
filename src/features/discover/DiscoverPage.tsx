@@ -5,14 +5,13 @@ import { ArrowUpDown, Search, SlidersHorizontal, X } from 'lucide-react';
 import { facetValues, filtersFromParams, filtersToParams, search, SORT_MODES, sortResults, STAT_SORTS, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemCard } from '@/components/ItemCard';
+import { InfiniteList, LIST_GRID } from '@/components/InfiniteList';
 import { useAttrText } from '@/components/AttrText';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ItemPopularity } from './ItemPopularity';
 import { useItemStats } from './useItemStats';
-
-const PAGE = 48;
 
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
@@ -54,14 +53,10 @@ export function DiscoverPage() {
   const { data: catalog, isLoading, error } = useCatalog();
   const { data: stats } = useItemStats();
   const [params, setParams] = useSearchParams();
-  const [shown, setShown] = React.useState(PAGE);
   const [showFilters, setShowFilters] = React.useState(false);
 
   const filters = filtersFromParams(params);
-  const apply = (next: Filters) => {
-    setParams(filtersToParams(next), { replace: true });
-    setShown(PAGE);
-  };
+  const apply = (next: Filters) => setParams(filtersToParams(next), { replace: true });
   const setFacet = (key: string, value: string) => apply({ ...filters, facets: { ...filters.facets, [key]: value } });
 
   const all = React.useMemo(() => (catalog ? [...catalog.values()] : []), [catalog]);
@@ -156,7 +151,7 @@ export function DiscoverPage() {
       {error ? <p className="text-sm text-destructive">{t('common.error')}</p> : null}
 
       {isLoading ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={LIST_GRID}>
           {Array.from({ length: 6 }, (_, i) => (
             <Skeleton key={i} className="h-24 rounded-xl" />
           ))}
@@ -183,18 +178,11 @@ export function DiscoverPage() {
               </select>
             </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {results.slice(0, shown).map((it) => (
-              <ItemCard key={it.id} item={it} extra={stats ? <ItemPopularity stats={stats.get(it.id)} /> : null} />
-            ))}
-          </div>
-          {shown < results.length ? (
-            <div className="flex justify-center pt-2">
-              <Button variant="outline" onClick={() => setShown((n) => n + PAGE)}>
-                {t('discover.more')}
-              </Button>
-            </div>
-          ) : null}
+          <InfiniteList
+            items={results}
+            resetKey={params.toString()}
+            renderItem={(it) => <ItemCard key={it.id} item={it} extra={stats ? <ItemPopularity stats={stats.get(it.id)} /> : null} />}
+          />
         </>
       )}
     </div>

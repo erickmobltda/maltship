@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, Minus, Plus, Archive, PenLine } from 'lucide-react';
 import { useCatalog } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemImage } from '@/components/ItemImage';
+import { InfiniteList } from '@/components/InfiniteList';
 import { useAttrText } from '@/components/AttrText';
 import { Stars } from '@/components/Stars';
 import { Button } from '@/components/ui/button';
@@ -181,11 +182,7 @@ export function ItemPage() {
         ) : ratings.data.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t('item.noRatings')}</p>
         ) : (
-          <div className="space-y-3">
-            {ratings.data.map((r) => (
-              <RatingCard key={r.id} rating={r} />
-            ))}
-          </div>
+          <InfiniteList items={ratings.data} className="space-y-3" renderItem={(r) => <RatingCard key={r.id} rating={r} />} />
         )}
       </section>
 

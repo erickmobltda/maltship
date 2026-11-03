@@ -10,6 +10,7 @@ import { toast } from '@/components/ui/toast';
 import { Avatar } from '@/components/Avatar';
 import { DemoBanner } from '@/components/DemoBanner';
 import { ItemCard } from '@/components/ItemCard';
+import { InfiniteList, usePageLimit } from '@/components/InfiniteList';
 import { useCatalog } from '@/lib/catalog';
 import type { OwnedItem, WishItem } from '@/lib/types';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -25,12 +26,15 @@ function Items({ uid, list, publicOnly }: { uid: string; list: 'owned' | 'wishli
   if (res.loading) return <Skeleton className="h-24 rounded-xl" />;
   if (!res.data.length) return <p className="text-sm text-muted-foreground">{t('profile.nothingHere')}</p>;
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {res.data.map((x) => {
+    <InfiniteList
+      name={list}
+      items={res.data}
+      resetKey={uid}
+      renderItem={(x) => {
         const item = catalog?.get(x.itemId);
         return item ? <ItemCard key={x.id} item={item} /> : null;
-      })}
-    </div>
+      }}
+    />
   );
 }
 
@@ -44,7 +48,8 @@ export function ProfilePage() {
   const counts = useFollowCounts(uid);
   const following = useIsFollowing(user?.uid, uid);
   const toggleFollow = useToggleFollow();
-  const ratings = useUserRatings(uid);
+  const { limit, moreIf } = usePageLimit('ratings');
+  const ratings = useUserRatings(uid, limit);
   const avatar = useAvatar(isDemo ? undefined : uid);
   const [zoom, setZoom] = React.useState(false);
 
@@ -125,8 +130,12 @@ export function ProfilePage() {
             </TabsTrigger>
           ) : null}
         </TabsList>
-        <TabsContent value="ratings" className="mt-4 space-y-3">
-          {ratings.data.length ? ratings.data.map((r) => <RatingCard key={r.id} rating={r} showItem />) : <p className="text-sm text-muted-foreground">{t('profile.noRatings')}</p>}
+        <TabsContent value="ratings" className="mt-4">
+          {ratings.data.length ? (
+            <InfiniteList name="ratings" items={ratings.data} resetKey={uid} loading={ratings.loading} more={moreIf(ratings.data.length)} renderItem={(r) => <RatingCard key={r.id} rating={r} showItem />} />
+          ) : (
+            <p className="text-sm text-muted-foreground">{t('profile.noRatings')}</p>
+          )}
         </TabsContent>
         {showOwned ? (
           <TabsContent value="owned" className="mt-4">

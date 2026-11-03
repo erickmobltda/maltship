@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/toast';
 import { ItemCard } from '@/components/ItemCard';
+import { InfiniteList } from '@/components/InfiniteList';
 import { NO_FILTERS, search, useCatalog } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 import { niche } from '@/niche/config';
@@ -58,7 +59,7 @@ export function CollectionPage() {
   const { data: catalog } = useCatalog();
   const { owned, wishlist } = useMyLists();
   const removed = useRemoved(user?.uid);
-  const rated = useUserRatings(user?.uid, true);
+  const rated = useUserRatings(user?.uid);
   const [text, setText] = React.useState('');
 
   const matches = ({ itemId }: { itemId: string }) => {
@@ -148,8 +149,11 @@ export function CollectionPage() {
           ) : shownOwned.length === 0 ? (
             noResults
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {shownOwned.map((o) => {
+            <InfiniteList
+              name="owned"
+              items={shownOwned}
+              resetKey={text}
+              renderItem={(o) => {
                 const item = catalog?.get(o.itemId);
                 if (!item) return <div key={o.id}>{gone}</div>;
                 return (
@@ -167,8 +171,8 @@ export function CollectionPage() {
                     }
                   />
                 );
-              })}
-            </div>
+              }}
+            />
           )}
         </TabsContent>
 
@@ -178,17 +182,26 @@ export function CollectionPage() {
           ) : shownWishlist.length === 0 ? (
             noResults
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {shownWishlist.map((w) => {
+            <InfiniteList
+              name="wishlist"
+              items={shownWishlist}
+              resetKey={text}
+              renderItem={(w) => {
                 const item = catalog?.get(w.itemId);
                 return item ? <ItemCard key={w.id} item={item} /> : <div key={w.id}>{gone}</div>;
-              })}
-            </div>
+              }}
+            />
           )}
         </TabsContent>
 
-        <TabsContent value="rated" className="mt-4 space-y-3">
-          {rated.data.length === 0 ? <Empty>{t('collection.ratedEmpty')}</Empty> : shownRated.length === 0 ? noResults : shownRated.map((r) => <RatingCard key={r.id} rating={r} showItem />)}
+        <TabsContent value="rated" className="mt-4">
+          {rated.data.length === 0 ? (
+            <Empty>{t('collection.ratedEmpty')}</Empty>
+          ) : shownRated.length === 0 ? (
+            noResults
+          ) : (
+            <InfiniteList name="rated" items={shownRated} resetKey={text} renderItem={(r) => <RatingCard key={r.id} rating={r} showItem />} />
+          )}
         </TabsContent>
       </Tabs>
       {isDemo ? <p className="text-xs text-muted-foreground">{t('demo.collectionNote')}</p> : null}

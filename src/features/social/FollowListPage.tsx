@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { InfiniteList } from '@/components/InfiniteList';
 import { useFollows, useHandleUid, useProfiles } from './useSocial';
 import { PersonRow } from './PeoplePage';
 
@@ -31,12 +32,14 @@ export function FollowListPage({ kind }: { kind: 'followers' | 'following' }) {
       ) : !uids.length ? (
         <p className="text-sm text-muted-foreground">{t('profile.nothingHere')}</p>
       ) : (
-        <div className="space-y-2">
-          {uids.map((u) => {
+        <InfiniteList
+          items={uids}
+          className="space-y-2"
+          renderItem={(u) => {
             const p = profiles.data?.get(u);
             return p ? <PersonRow key={u} profile={p} /> : null;
-          })}
-        </div>
+          }}
+        />
       )}
     </div>
   );

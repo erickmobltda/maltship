@@ -51,8 +51,7 @@
     },
     "empty": "Nothing matches these filters.",
     "results_one": "{{count}} result",
-    "results_other": "{{count}} results",
-    "more": "Show more"
+    "results_other": "{{count}} results"
   },
   "item": {
     "notFound": "This item isn't in the catalog.",
