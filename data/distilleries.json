@@ -1,0 +1,35 @@
+{
+  "_about": "Scotch distilleries by whisky region, hand-curated from public facts. Each entry is a name, or [name, other names it is bottled under]. Used by scripts/niche/build_items.py to find a bottle's distillery and region in its name.",
+  "Islay": [
+    "Ardbeg", "Ardnahoe", "Bowmore", ["Bruichladdich", "Port Charlotte", "Octomore"], "Bunnahabhain", "Caol Ila",
+    "Kilchoman", "Lagavulin", "Laphroaig", "Port Ellen"
+  ],
+  "Speyside": [
+    "Aberlour", "Allt-a-Bhainne", "Auchroisk", "Aultmore", "Balmenach", "Balvenie", "Benriach", "Benrinnes", "Benromach",
+    "Braeval", "Caperdonich", "Cardhu", "Coleburn", "Convalmore", "Cragganmore", "Craigellachie", "Dailuaine",
+    "Dallas Dhu", "Dalmunach", "Dufftown", "Glen Elgin", "Glen Grant", "Glen Keith", "Glen Moray", "Glen Spey",
+    "Glenallachie", "Glenburgie", "Glendullan", "Glenfarclas", "Glenfiddich", "Glenlivet", "Glenlossie",
+    "Glenrothes", "Glentauchers", "Imperial", "Inchgower", "Kininvie", "Knockando", "Linkwood", "Longmorn",
+    "Macallan", "Mannochmore", ["Miltonduff", "Mosstowie"], "Mortlach", "Pittyvaich", "Speyburn", "Strathisla", "Strathmill",
+    "Tamdhu", "Tamnavulin", "Tomintoul", "Tormore"
+  ],
+  "Highlands": [
+    "Aberfeldy", "Ardmore", ["Knockdhu", "anCnoc"], "Ardnamurchan", "Balblair", "Ben Nevis", "Blair Athol", "Brora",
+    "Clynelish", "Dalmore", "Dalwhinnie", "Deanston", "Edradour", "Fettercairn", ["Glen Deveron", "Macduff"],
+    "Glen Garioch", "Glen Ord", "Glencadam", "Glendronach", "Glenglassaugh", "Glengoyne", "Glenmorangie",
+    "Glenturret", "Glenury", "Glen Albyn", "Glen Mhor", "Glenugie", "Glenesk", "Lochside", "Millburn",
+    ["Loch Lomond", "Inchmoan", "Croftengea"], "Oban", ["Pulteney", "Old Pulteney"], "Royal Brackla",
+    "Royal Lochnagar", "Teaninich", "Tomatin", "Tullibardine", "Wolfburn", "Invergordon", "Banff", "North Port"
+  ],
+  "Islands": [
+    ["Arran", "Lochranza"], "Highland Park", ["Jura", "Isle of Jura"], "Scapa", "Talisker", ["Tobermory", "Ledaig"],
+    "Raasay", "Isle of Harris"
+  ],
+  "Lowlands": [
+    "Auchentoshan", "Bladnoch", "Glenkinchie", "Rosebank", "Littlemill", "Daftmill", "Kingsbarns", "Ailsa Bay",
+    "Annandale", "Lindores", ["St Magdalene", "Linlithgow"], "Inverleven", "Ladyburn", "Kinclaith"
+  ],
+  "Campbeltown": [
+    ["Springbank", "Longrow", "Hazelburn"], "Glen Scotia", ["Glengyle", "Kilkerran"]
+  ]
+}
