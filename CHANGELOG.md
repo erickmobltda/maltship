@@ -6,6 +6,7 @@
 
 - Catalog: about 2,200 real whiskies with Whisky Advocate scores (filter by score), a flavour profile from *Whisky Classified* for Scotch single malts, and the region of each Scotch distillery. The 20 sample items keep their ids.
 - Bottle photos from Open Food Facts where it has them, credited on the item page.
+- How the catalog was built: `data/BACKFILL.md`.
 
 ## 2026-10-30 — First version
 

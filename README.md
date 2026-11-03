@@ -26,7 +26,7 @@
 
 - **Front:** React 18, Vite 5, TypeScript (strict), Tailwind, TanStack Query, i18next (`core` + `niche` namespaces).
 - **Auth + DB:** Firebase Auth and Firestore in the shared `erickmob-apps` project, under `apps/whisky/`. The rules live in [erickmob-api/firebase](https://github.com/erickmobltda/erickmob-api/tree/main/firebase) (`tests/collector.cases.js`).
-- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`, which `scripts/niche/build_items.py` makes from:
+- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`. **Where the data comes from and how it was merged: [data/BACKFILL.md](data/BACKFILL.md).** `scripts/niche/build_items.py` makes it from:
   - the Whisky Advocate reviews on Kaggle (`neilcosgrove/scotch-whiskey-reviews-update-2020`): name, category and score only, never the review text;
   - Japanese bottle names (Kaggle `koki25ando/japanese-whisky-review`);
   - `data/whisky_classified.csv` (flavour of 86 distilleries, *Whisky Classified* by David Wishart) and `data/distilleries.json` (Scotch distilleries by region, hand-curated);
