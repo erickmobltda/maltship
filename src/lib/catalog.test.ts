@@ -80,6 +80,11 @@ describe('catalog', () => {
     expect(search(items, { ...NO_FILTERS, minScore: 90 }).map((i) => i.id)).toEqual(['x1']);
   });
 
+  it('photo filter', () => {
+    expect(search(items, { ...NO_FILTERS, photo: 'with' }).map((i) => i.id)).toEqual(['x2']);
+    expect(search(items, { ...NO_FILTERS, photo: 'without' }).map((i) => i.id)).toEqual(['x1', 'x3']);
+  });
+
   it('sorts by best score, then image, then name', () => {
     expect(sortResults(items).map((i) => i.id)).toEqual(['x1', 'x3', 'x2']);
   });
@@ -121,9 +126,9 @@ describe('catalog', () => {
   });
 
   it('filters round-trip through the URL', () => {
-    const f = { text: 'oak', facets: { kind: 'a', maker: 'Maison' }, minScore: 90, sort: 'name' as const };
+    const f = { text: 'oak', facets: { kind: 'a', maker: 'Maison' }, minScore: 90, photo: 'without' as const, sort: 'name' as const };
     expect(filtersFromParams(filtersToParams(f), config)).toEqual(f);
-    expect(filtersFromParams(new URLSearchParams('?unknown=1&sort=nope'), config)).toEqual(NO_FILTERS);
+    expect(filtersFromParams(new URLSearchParams('?unknown=1&sort=nope&photo=nope'), config)).toEqual(NO_FILTERS);
     expect(filtersToParams(NO_FILTERS).toString()).toBe('');
   });
 });

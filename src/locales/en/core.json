@@ -41,6 +41,10 @@
     "search": "Search the catalog",
     "filters": "Filters",
     "clearFilters": "Clear filters",
+    "photo": {
+      "with": "With photo",
+      "without": "No photo"
+    },
     "sortBy": "Sort by",
     "sort": {
       "featured": "Featured",
