@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { facetValues, filtersFromParams, filtersToParams, search, sortResults, useCatalog, type Filters } from '@/lib/catalog';
+import { ArrowUpDown, Search, SlidersHorizontal, X } from 'lucide-react';
+import { facetValues, filtersFromParams, filtersToParams, search, SORT_MODES, sortResults, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemCard } from '@/components/ItemCard';
 import { useAttrText } from '@/components/AttrText';
@@ -69,7 +69,7 @@ export function DiscoverPage() {
     [all],
   );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const results = React.useMemo(() => sortResults(search(all, filters)), [all, params]);
+  const results = React.useMemo(() => sortResults(search(all, filters), filters.sort), [all, params]);
   const activeFilters = Object.values(filters.facets).filter(Boolean).length + (filters.minScore ? 1 : 0);
 
   return (
@@ -160,7 +160,24 @@ export function DiscoverPage() {
         <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{t('discover.empty')}</div>
       ) : (
         <>
-          <p className="text-xs text-muted-foreground">{t('discover.results', { count: results.length })}</p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs text-muted-foreground">{t('discover.results', { count: results.length })}</p>
+            <div className="relative shrink-0">
+              <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+              <select
+                value={filters.sort}
+                onChange={(e) => apply({ ...filters, sort: e.target.value as SortMode })}
+                aria-label={t('discover.sortBy')}
+                className="h-9 rounded-full border bg-card pl-8 pr-2 text-xs outline-none focus:border-primary"
+              >
+                {SORT_MODES.map((s) => (
+                  <option key={s} value={s}>
+                    {t(`discover.sort.${s}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.slice(0, shown).map((it) => (
               <ItemCard key={it.id} item={it} />

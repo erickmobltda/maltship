@@ -21,13 +21,17 @@ export interface CatalogFile {
   rows: unknown[][];
 }
 
+export const SORT_MODES = ['featured', 'name'] as const;
+export type SortMode = (typeof SORT_MODES)[number];
+
 export interface Filters {
   text: string;
   facets: Record<string, string>;
   minScore: number;
+  sort: SortMode;
 }
 
-export const NO_FILTERS: Filters = { text: '', facets: {}, minScore: 0 };
+export const NO_FILTERS: Filters = { text: '', facets: {}, minScore: 0, sort: 'featured' };
 
 export function fold(text: string): string {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -67,8 +71,11 @@ export function search(items: Item[], f: Filters): Item[] {
   );
 }
 
-/** Best score first, then items with an image, then by name. */
-export function sortResults(items: Item[]): Item[] {
+const byName = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
+
+/** featured: best score first, then items with an image, then by name. name: A to Z, ignoring accents and case. */
+export function sortResults(items: Item[], sort: SortMode = 'featured'): Item[] {
+  if (sort === 'name') return [...items].sort((a, b) => byName.compare(a.name, b.name));
   return [...items].sort(
     (a, b) => (b.bestScore ?? 0) - (a.bestScore ?? 0) || Number(!!b.image) - Number(!!a.image) || a.name.localeCompare(b.name),
   );
@@ -87,7 +94,8 @@ export function facetValues(items: Item[], key: string, limit = 30): string[] {
 export function filtersFromParams(params: URLSearchParams, config: NicheConfig = niche): Filters {
   const facets: Record<string, string> = {};
   for (const a of config.attributes) if (a.facet && params.get(a.key)) facets[a.key] = params.get(a.key)!;
-  return { text: params.get('q') ?? '', facets, minScore: Number(params.get('score') ?? 0) };
+  const sort = SORT_MODES.find((s) => s === params.get('sort')) ?? NO_FILTERS.sort;
+  return { text: params.get('q') ?? '', facets, minScore: Number(params.get('score') ?? 0), sort };
 }
 
 export function filtersToParams(f: Filters): URLSearchParams {
@@ -95,6 +103,7 @@ export function filtersToParams(f: Filters): URLSearchParams {
   if (f.text) p.set('q', f.text);
   for (const [k, v] of Object.entries(f.facets)) if (v) p.set(k, v);
   if (f.minScore) p.set('score', String(f.minScore));
+  if (f.sort !== NO_FILTERS.sort) p.set('sort', f.sort);
   return p;
 }
 

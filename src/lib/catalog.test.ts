@@ -61,14 +61,20 @@ describe('catalog', () => {
     expect(sortResults(items).map((i) => i.id)).toEqual(['x1', 'x3', 'x2']);
   });
 
+  it('sorts by name ignoring accents and case, with numbers in order', () => {
+    const named = ['b', 'Éa', 'Ea 10', 'Ea 9', 'a'].map((name) => ({ ...items[0], name }));
+    expect(sortResults(named, 'name').map((i) => i.name)).toEqual(['a', 'b', 'Éa', 'Ea 9', 'Ea 10']);
+  });
+
   it('facet values: most common first, list values counted once per item', () => {
     expect(facetValues(items, 'maker')).toEqual(['Maison', 'Other']);
     expect(facetValues(items, 'notes')).toEqual(['oak', 'fruit']);
   });
 
   it('filters round-trip through the URL', () => {
-    const f = { text: 'oak', facets: { kind: 'a', maker: 'Maison' }, minScore: 90 };
+    const f = { text: 'oak', facets: { kind: 'a', maker: 'Maison' }, minScore: 90, sort: 'name' as const };
     expect(filtersFromParams(filtersToParams(f), config)).toEqual(f);
-    expect(filtersFromParams(new URLSearchParams('?unknown=1'), config)).toEqual(NO_FILTERS);
+    expect(filtersFromParams(new URLSearchParams('?unknown=1&sort=nope'), config)).toEqual(NO_FILTERS);
+    expect(filtersToParams(NO_FILTERS).toString()).toBe('');
   });
 });

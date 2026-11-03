@@ -41,6 +41,11 @@
     "search": "Buscar no catálogo",
     "filters": "Filtros",
     "clearFilters": "Limpar filtros",
+    "sortBy": "Ordenar por",
+    "sort": {
+      "featured": "Destaques",
+      "name": "Nome A–Z"
+    },
     "empty": "Nada combina com esses filtros.",
     "results_one": "{{count}} resultado",
     "results_other": "{{count}} resultados",
