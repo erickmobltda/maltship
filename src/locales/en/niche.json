@@ -24,7 +24,8 @@
     "popularity_one": "{{count}} person has it on their shelf",
     "popularity_other": "{{count}} people have it on their shelves",
     "popularityNone": "No shelf data yet",
-    "sortMost": "Most on shelves"
+    "sortMost": "Most on shelves",
+    "activityChart": "Added to and removed from the shelf"
   },
   "attr": {
     "distillery": "Distillery",
