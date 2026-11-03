@@ -41,6 +41,10 @@
     "search": "Buscar no catálogo",
     "filters": "Filtros",
     "clearFilters": "Limpar filtros",
+    "photo": {
+      "with": "Com foto",
+      "without": "Sem foto"
+    },
     "sortBy": "Ordenar por",
     "sort": {
       "featured": "Destaques",

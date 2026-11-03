@@ -45,14 +45,18 @@ export interface ItemStats {
 }
 export type ItemStatsMap = Map<string, ItemStats>;
 
+export const PHOTO_FILTERS = ['with', 'without'] as const;
+export type PhotoFilter = (typeof PHOTO_FILTERS)[number];
+
 export interface Filters {
   text: string;
   facets: Record<string, string>;
   minScore: number;
+  photo: PhotoFilter | '';
   sort: SortMode;
 }
 
-export const NO_FILTERS: Filters = { text: '', facets: {}, minScore: 0, sort: 'featured' };
+export const NO_FILTERS: Filters = { text: '', facets: {}, minScore: 0, photo: '', sort: 'featured' };
 
 export function fold(text: string): string {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -97,7 +101,8 @@ export function search(items: Item[], f: Filters): Item[] {
     (it) =>
       words.every((w) => it.haystack.includes(w)) &&
       facets.every(([k, v]) => matchesFacet(it.attrs[k], v)) &&
-      (!f.minScore || (it.bestScore ?? 0) >= f.minScore),
+      (!f.minScore || (it.bestScore ?? 0) >= f.minScore) &&
+      (!f.photo || !!it.image === (f.photo === 'with')),
   );
 }
 
@@ -159,7 +164,8 @@ export function filtersFromParams(params: URLSearchParams, config: NicheConfig =
   const facets: Record<string, string> = {};
   for (const a of config.attributes) if (a.facet && params.get(a.key)) facets[a.key] = params.get(a.key)!;
   const sort = SORT_MODES.find((s) => s === params.get('sort')) ?? NO_FILTERS.sort;
-  return { text: params.get('q') ?? '', facets, minScore: Number(params.get('score') ?? 0), sort };
+  const photo = PHOTO_FILTERS.find((v) => v === params.get('photo')) ?? NO_FILTERS.photo;
+  return { text: params.get('q') ?? '', facets, minScore: Number(params.get('score') ?? 0), photo, sort };
 }
 
 export function filtersToParams(f: Filters): URLSearchParams {
@@ -167,6 +173,7 @@ export function filtersToParams(f: Filters): URLSearchParams {
   if (f.text) p.set('q', f.text);
   for (const [k, v] of Object.entries(f.facets)) if (v) p.set(k, v);
   if (f.minScore) p.set('score', String(f.minScore));
+  if (f.photo) p.set('photo', f.photo);
   if (f.sort !== NO_FILTERS.sort) p.set('sort', f.sort);
   return p;
 }

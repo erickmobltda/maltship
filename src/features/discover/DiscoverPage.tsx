@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpDown, Search, SlidersHorizontal, X } from 'lucide-react';
-import { facetValues, filtersFromParams, filtersToParams, search, SORT_MODES, sortResults, STAT_SORTS, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
+import { facetValues, filtersFromParams, filtersToParams, PHOTO_FILTERS, search, SORT_MODES, sortResults, STAT_SORTS, useCatalog, type Filters, type SortMode } from '@/lib/catalog';
 import { niche } from '@/niche/config';
 import { ItemCard } from '@/components/ItemCard';
 import { InfiniteList, LIST_GRID } from '@/components/InfiniteList';
@@ -71,7 +71,7 @@ export function DiscoverPage() {
   const sort = sortModes.includes(filters.sort) ? filters.sort : 'featured';
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const results = React.useMemo(() => sortResults(search(all, filters), sort, stats), [all, params, sort, stats]);
-  const activeFilters = Object.values(filters.facets).filter(Boolean).length + (filters.minScore ? 1 : 0);
+  const activeFilters = Object.values(filters.facets).filter(Boolean).length + (filters.minScore ? 1 : 0) + (filters.photo ? 1 : 0);
 
   return (
     <div className="space-y-4">
@@ -122,6 +122,11 @@ export function DiscoverPage() {
                 </div>
               ))}
             <div className="scrollbar-hide flex items-center gap-2 overflow-x-auto">
+              {PHOTO_FILTERS.map((p) => (
+                <Chip key={p} active={filters.photo === p} onClick={() => apply({ ...filters, photo: filters.photo === p ? '' : p })}>
+                  {t(`discover.photo.${p}`)}
+                </Chip>
+              ))}
               {niche.scores?.filterSteps.map((s) => (
                 <Chip key={s} active={filters.minScore === s} onClick={() => apply({ ...filters, minScore: filters.minScore === s ? 0 : s })}>
                   {t('niche:scores.badge')} {s}+
@@ -139,7 +144,7 @@ export function DiscoverPage() {
                   />
                 ))}
               {activeFilters ? (
-                <button className="shrink-0 text-xs text-muted-foreground underline" onClick={() => apply({ ...filters, facets: {}, minScore: 0 })}>
+                <button className="shrink-0 text-xs text-muted-foreground underline" onClick={() => apply({ ...filters, facets: {}, minScore: 0, photo: '' })}>
                   {t('discover.clearFilters')}
                 </button>
               ) : null}
