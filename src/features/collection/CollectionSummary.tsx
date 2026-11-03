@@ -6,7 +6,7 @@ import type { Item } from '@/lib/catalog';
 import type { OwnedItem, Rating, RemovedItem } from '@/lib/types';
 import { niche } from '@/niche/config';
 import { cn } from '@/lib/utils';
-import { activitySeries, averageRating, countUnits, defaultBucket, earliestDay, lastMonths, toDay, topTraits, type Bucket, type DayRange } from './collectionStats';
+import { activitySeries, averageRating, countUnits, defaultBucket, defaultPeriod, earliestDay, lastMonths, toDay, topTraits, type Bucket, type DayRange } from './collectionStats';
 
 const ADDED_COLOR = '#3987e5';
 const REMOVED_COLOR = '#d95926';
@@ -176,10 +176,12 @@ function Choices<T extends string | number>({ label, options, value, onChange }:
 
 function ActivityCard({ owned, removed }: { owned: OwnedItem[]; removed: RemovedItem[] }) {
   const { t } = useTranslation();
-  const [period, setPeriod] = React.useState<(typeof PERIODS)[number] | 'custom'>(12);
-  const [custom, setCustom] = React.useState<DayRange>(() => lastMonths(12));
+  // null follows the activity until a period is clicked.
+  const [chosenPeriod, setChosenPeriod] = React.useState<(typeof PERIODS)[number] | 'custom' | null>(null);
+  const [custom, setCustom] = React.useState<DayRange>(() => lastMonths(1));
   // null follows the period; a click on a grouping holds until the period changes.
   const [chosenBucket, setChosenBucket] = React.useState<Bucket | null>(null);
+  const period = chosenPeriod ?? defaultPeriod(PERIODS, owned, removed);
 
   const today = toDay(new Date());
   const earliest = earliestDay(owned, removed);
@@ -194,7 +196,7 @@ function ActivityCard({ owned, removed }: { owned: OwnedItem[]; removed: Removed
 
   const choosePeriod = (next: typeof period) => {
     if (next === 'custom' && period !== 'custom') setCustom(range);
-    setPeriod(next);
+    setChosenPeriod(next);
     setChosenBucket(null);
   };
   const setDate = (key: keyof DayRange, value: string) => {
