@@ -106,12 +106,24 @@
       "traitsEmpty": "Add more items to see what they have in common.",
       "addedCount_one": "{{count}} added",
       "addedCount_other": "{{count}} added",
-      "activityChart": "Added and removed per month",
-      "month": "Month",
       "added": "Added",
       "removed": "Removed",
       "removedCount_one": "{{count}} removed",
-      "removedCount_other": "{{count}} removed"
+      "removedCount_other": "{{count}} removed",
+      "period": "Period",
+      "groupBy": "Group by",
+      "months_one": "{{count}} month",
+      "months_other": "{{count}} months",
+      "oneMonth": "Month",
+      "custom": "Custom",
+      "from": "From",
+      "to": "To",
+      "noActivity": "Nothing in this period",
+      "bucket": {
+        "month": "Monthly",
+        "week": "Weekly",
+        "day": "Daily"
+      }
     }
   },
   "feed": {

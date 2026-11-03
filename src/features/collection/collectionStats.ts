@@ -4,25 +4,87 @@ import type { OwnedItem, Rating, RemovedItem } from '@/lib/types';
 
 export const countUnits = (owned: Pick<OwnedItem, 'quantity'>[]) => owned.reduce((sum, o) => sum + o.quantity, 0);
 
+export type Bucket = 'month' | 'week' | 'day';
+/** Days as YYYY-MM-DD, which also sort in order. */
+export interface DayRange {
+  from: string;
+  to: string;
+}
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const makeDay = (y: number, m: number, d: number) => {
+  const date = new Date(y, m, d);
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+};
+const parts = (day: string) => {
+  const [y, m, d] = day.split('-').map(Number);
+  return [y, m - 1, d] as const;
+};
+const dayCount = ({ from, to }: DayRange) => {
+  const [a, b] = [from, to].map((day) => Date.UTC(...parts(day)));
+  return Math.round((b - a) / 86_400_000) + 1;
+};
+
+/** The day on the user's calendar: an item added at night must not land on the next day. */
+export const toDay = (when: Date | string) => {
+  const date = new Date(when);
+  return makeDay(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
+/** The current month and the ones before it, up to today. */
+export function lastMonths(months: number, now = new Date()): DayRange {
+  return { from: makeDay(now.getFullYear(), now.getMonth() - months + 1, 1), to: toDay(now) };
+}
+
+/** A grouping that stays readable for the length of the range. */
+export function defaultBucket(range: DayRange): Bucket {
+  const days = dayCount(range);
+  return days <= 31 ? 'day' : days <= 120 ? 'week' : 'month';
+}
+
+/** First and last day of the bucket holding `day`. Weeks run Monday to Sunday. */
+function bucketBounds(day: string, bucket: Bucket) {
+  const [y, m, d] = parts(day);
+  if (bucket === 'day') return { start: day, end: day };
+  if (bucket === 'month') return { start: makeDay(y, m, 1), end: makeDay(y, m + 1, 0) };
+  const monday = d - ((new Date(y, m, d).getDay() + 6) % 7);
+  return { start: makeDay(y, m, monday), end: makeDay(y, m, monday + 6) };
+}
+
 /**
- * Items added and removed per month, oldest first, ending in the current month. Months with none count 0.
- * A removed item still counts as added in its own month.
+ * Items added and removed per bucket, oldest first. Buckets with none count 0; the first and last are cut to the range.
+ * A removed item still counts as added in its own bucket.
  */
-export function monthlyActivity(owned: Pick<OwnedItem, 'addedAt'>[], removed: Pick<RemovedItem, 'addedAt' | 'removedAt'>[], now = new Date(), months = 12) {
-  const counts = new Map<string, { month: string; added: number; removed: number }>();
-  for (let i = months - 1; i >= 0; i--) {
-    const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1)).toISOString().slice(0, 7);
-    counts.set(month, { month, added: 0, removed: 0 });
+export function activitySeries(owned: Pick<OwnedItem, 'addedAt'>[], removed: Pick<RemovedItem, 'addedAt' | 'removedAt'>[], range: DayRange, bucket: Bucket) {
+  const { from, to } = range;
+  const counts = new Map<string, { start: string; end: string; added: number; removed: number }>();
+  for (let start = from; start <= to; ) {
+    const { end } = bucketBounds(start, bucket);
+    counts.set(start, { start, end: end < to ? end : to, added: 0, removed: 0 });
+    const [y, m, d] = parts(end);
+    start = makeDay(y, m, d + 1);
   }
+  const entryOf = (when: string) => {
+    const day = toDay(when);
+    if (day < from || day > to) return undefined;
+    const { start } = bucketBounds(day, bucket);
+    return counts.get(start < from ? from : start);
+  };
   for (const o of [...owned, ...removed]) {
-    const entry = counts.get(o.addedAt.slice(0, 7));
+    const entry = entryOf(o.addedAt);
     if (entry) entry.added++;
   }
   for (const r of removed) {
-    const entry = counts.get(r.removedAt.slice(0, 7));
+    const entry = entryOf(r.removedAt);
     if (entry) entry.removed++;
   }
   return [...counts.values()];
+}
+
+/** The oldest day with any activity, to keep a custom range from covering empty decades. */
+export function earliestDay(owned: Pick<OwnedItem, 'addedAt'>[], removed: Pick<RemovedItem, 'addedAt' | 'removedAt'>[], now = new Date()) {
+  const days = [...owned, ...removed].map((o) => toDay(o.addedAt)).concat(removed.map((r) => toDay(r.removedAt)), toDay(now));
+  return days.reduce((a, b) => (b < a ? b : a));
 }
 
 /** The attribute values most items share. A value on a single item is not "in common". */
