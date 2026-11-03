@@ -32,6 +32,7 @@
     "country": "País",
     "region": "Região",
     "style": "Estilo",
+    "flavour": "Perfil de sabor",
     "age": "Idade",
     "abv": "Teor alcoólico",
     "cask": "Barril"
@@ -45,6 +46,20 @@
       "rye": "Rye",
       "single_pot_still": "Single pot still",
       "other": "Outro"
+    },
+    "flavour": {
+      "full_body": "Encorpado",
+      "sweet": "Doce",
+      "smoky": "Defumado",
+      "medicinal": "Medicinal",
+      "tobacco": "Tabaco",
+      "honey": "Mel",
+      "spicy": "Especiado",
+      "winey": "Vinoso",
+      "nutty": "Amendoado",
+      "malty": "Maltado",
+      "fruity": "Frutado",
+      "floral": "Floral"
     }
   },
   "zero": {
@@ -78,6 +93,12 @@
     }
   },
   "experiencedOn": "Provado em",
+  "scores": {
+    "badge": "Whisky Advocate",
+    "best": "Melhor nota da Whisky Advocate",
+    "history_one": "{{count}} avaliação, de {{min}} a {{max}}",
+    "history_other": "{{count}} avaliações, de {{min}} a {{max}}"
+  },
   "discover": {
     "subtitle_one": "{{count}} whisky no catálogo",
     "subtitle_other": "{{count}} whiskies no catálogo",
@@ -86,5 +107,5 @@
   "feed": {
     "subtitle": "O que o pessoal está provando."
   },
-  "credits": "Catálogo de exemplo para testes: marcas reais, especificações ilustrativas. O Maltship faz parte do erickmob.dev."
+  "credits": "Catálogo: notas e nomes da Whisky Advocate (via um dataset público do Kaggle), perfis de sabor do Whisky Classified (David Wishart). Fotos das garrafas: colaboradores do Open Food Facts, CC BY-SA 3.0. O Maltship faz parte do erickmob.dev."
 }

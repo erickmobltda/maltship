@@ -48,6 +48,26 @@
       "showInSpecs": true
     },
     {
+      "key": "flavour",
+      "type": "list",
+      "enumValues": [
+        "full_body",
+        "sweet",
+        "smoky",
+        "medicinal",
+        "tobacco",
+        "honey",
+        "spicy",
+        "winey",
+        "nutty",
+        "malty",
+        "fruity",
+        "floral"
+      ],
+      "facet": "chips",
+      "showInSpecs": true
+    },
+    {
       "key": "age",
       "type": "number",
       "unit": "years",
@@ -67,6 +87,15 @@
       "showInSpecs": true
     }
   ],
+  "scores": {
+    "min": 50,
+    "max": 100,
+    "filterSteps": [
+      85,
+      90,
+      93
+    ]
+  },
   "ratingTags": [
     "peat",
     "smoke",
@@ -103,6 +132,7 @@
   },
   "ageGate": true,
   "image": {
-    "aspect": "3 / 4"
+    "aspect": "3 / 4",
+    "base": "https://cdn.erickmob.dev/maltship"
   }
 }

@@ -9,7 +9,7 @@
 
 ## Features
 
-- **Discover:** the whole catalog (20 sample whiskies for now) with accent-insensitive search and filters by style, distillery, country and region. Filters live in the URL.
+- **Discover:** the whole catalog (about 2,200 whiskies) with accent-insensitive search and filters by style, flavour profile, Whisky Advocate score, distillery, country and region. Filters live in the URL.
 - **Item page:** specs, community average, everyone's ratings.
   - **Own it** goes on your *Shelf*, with quantity and sealed/open.
   - **Wish it** goes on your wishlist.
@@ -26,8 +26,14 @@
 
 - **Front:** React 18, Vite 5, TypeScript (strict), Tailwind, TanStack Query, i18next (`core` + `niche` namespaces).
 - **Auth + DB:** Firebase Auth and Firestore in the shared `erickmob-apps` project, under `apps/whisky/`. The rules live in [erickmob-api/firebase](https://github.com/erickmobltda/erickmob-api/tree/main/firebase) (`tests/collector.cases.js`).
-- **Catalog:** a static `public/catalog.json` built from `data/sample.json` by `npm run catalog`. Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads.
-- **Images:** none yet; every item shows the bottle placeholder (`src/niche/Placeholder.tsx`).
+- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`, which `scripts/niche/build_items.py` makes from:
+  - the Whisky Advocate reviews on Kaggle (`neilcosgrove/scotch-whiskey-reviews-update-2020`): name, category and score only, never the review text;
+  - Japanese bottle names (Kaggle `koki25ando/japanese-whisky-review`);
+  - `data/whisky_classified.csv` (flavour of 86 distilleries, *Whisky Classified* by David Wishart) and `data/distilleries.json` (Scotch distilleries by region, hand-curated);
+  - `data/sample.json`, the first 20 items, kept so `k1`…`k20` never change.
+
+  Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads. The scraped sources' licence is unclear; only facts (names, scores, specs) are used.
+- **Images:** bottle photos from Open Food Facts (CC BY-SA 3.0), found by `scripts/niche/fetch_images.py` for the few bottles it has. Each photo's author and licence are shown on the item page (`data/image_credits.json`). Photos are served from the Cloudflare R2 bucket `erickmob-cdn` at `https://cdn.erickmob.dev/maltship/{n}.webp`. The others show the bottle placeholder (`src/niche/Placeholder.tsx`).
 - **Hosting:** GitHub Pages via `.github/workflows/pages.yml` (`actions/deploy-pages`).
 
 ### Firestore paths (`apps/whisky/…`)
@@ -79,7 +85,18 @@ Collaborators get the same four values from Erick as a `.env.local` file; they a
 npm install
 npm run dev                      # against production Firebase (needs .env.local, see .env.example)
 npm run typecheck && npm run lint && npm test && npm run i18n:check && node scripts/check-core.mjs && npm run build
-npm run catalog                  # rebuild public/catalog.json after editing data/sample.json
+npm run catalog                  # rebuild public/catalog.json from data/items.json
+python3 -m unittest discover -s scripts/niche   # tests of the catalog scripts
+```
+
+Rebuild the catalog from its sources:
+
+```bash
+bash scripts/niche/fetch_sources.sh      # downloads to data/raw/ (git-ignored), checks sha256
+python3 scripts/niche/build_items.py     # → data/items.json
+/tmp/img/bin/python scripts/niche/fetch_images.py   # optional, needs Pillow: photos → data/raw/images/
+python3 scripts/niche/build_items.py && npm run catalog
+bash scripts/niche/upload_images.sh      # owner only: photos → R2 bucket erickmob-cdn (cdn.erickmob.dev)
 ```
 
 The emulators need the rules file from the private erickmob-api repo, so this part is **owner only**. To run against the emulators:

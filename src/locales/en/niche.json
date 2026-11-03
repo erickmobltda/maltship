@@ -32,6 +32,7 @@
     "country": "Country",
     "region": "Region",
     "style": "Style",
+    "flavour": "Flavour profile",
     "age": "Age",
     "abv": "ABV",
     "cask": "Cask"
@@ -45,6 +46,20 @@
       "rye": "Rye",
       "single_pot_still": "Single pot still",
       "other": "Other"
+    },
+    "flavour": {
+      "full_body": "Full body",
+      "sweet": "Sweet",
+      "smoky": "Smoky",
+      "medicinal": "Medicinal",
+      "tobacco": "Tobacco",
+      "honey": "Honey",
+      "spicy": "Spicy",
+      "winey": "Winey",
+      "nutty": "Nutty",
+      "malty": "Malty",
+      "fruity": "Fruity",
+      "floral": "Floral"
     }
   },
   "zero": {
@@ -78,6 +93,12 @@
     }
   },
   "experiencedOn": "Tasted on",
+  "scores": {
+    "badge": "Whisky Advocate",
+    "best": "Best Whisky Advocate score",
+    "history_one": "{{count}} review, from {{min}} to {{max}}",
+    "history_other": "{{count}} reviews, from {{min}} to {{max}}"
+  },
   "discover": {
     "subtitle_one": "{{count}} whisky in the catalog",
     "subtitle_other": "{{count}} whiskies in the catalog",
@@ -86,5 +107,5 @@
   "feed": {
     "subtitle": "What people are tasting."
   },
-  "credits": "Sample catalog for testing: real brands, illustrative specs. Maltship is part of erickmob.dev."
+  "credits": "Catalog: Whisky Advocate scores and names (via a public Kaggle dataset), flavour profiles from Whisky Classified (David Wishart). Bottle photos: Open Food Facts contributors, CC BY-SA 3.0. Maltship is part of erickmob.dev."
 }
