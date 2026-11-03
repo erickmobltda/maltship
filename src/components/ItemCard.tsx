@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Item } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 import { niche } from '@/niche/config';
@@ -6,6 +7,7 @@ import { ItemImage } from './ItemImage';
 import { useAttrText } from './AttrText';
 
 export function ItemCard({ item, extra }: { item: Item; extra?: React.ReactNode }) {
+  const { t } = useTranslation();
   const text = useAttrText();
   const top = niche.image.layout === 'top';
   const subtitle = niche.attributes.filter((a) => a.subtitle).map((a) => text(a, item.attrs[a.key])).filter(Boolean).join(' · ');
@@ -19,15 +21,15 @@ export function ItemCard({ item, extra }: { item: Item; extra?: React.ReactNode 
     >
       <ItemImage item={item} className={top ? 'w-full' : 'w-16 shrink-0'} />
       <div className={cn('min-w-0 flex-1', !top && 'self-center')}>
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <div className="truncate font-medium group-hover:text-primary">{item.name}</div>
-            <div className="mt-0.5 truncate text-xs text-muted-foreground">{subtitle}</div>
+        <div className="truncate font-medium group-hover:text-primary">{item.name}</div>
+        <div className="mt-0.5 truncate text-xs text-muted-foreground">{subtitle}</div>
+        {item.bestScore ? (
+          <div className="mt-1 flex items-baseline gap-1.5 text-xs text-muted-foreground" title={t('niche:scores.best')}>
+            <span className="font-display text-sm font-semibold text-foreground">{item.bestScore}</span>
+            {t('niche:scores.badge')}
+            <span className="sr-only">{t('niche:scores.best')}</span>
           </div>
-          {item.bestScore ? (
-            <div className="shrink-0 rounded-md bg-primary/10 px-2 py-1 font-display text-lg font-semibold leading-none text-primary">{item.bestScore}</div>
-          ) : null}
-        </div>
+        ) : null}
         {extra}
       </div>
     </Link>

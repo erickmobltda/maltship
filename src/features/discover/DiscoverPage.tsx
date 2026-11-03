@@ -76,8 +76,7 @@ export function DiscoverPage() {
     <div className="space-y-4">
       <div>
         <h1 className="text-3xl font-semibold md:text-4xl">{t('discover.title')}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t('niche:discover.subtitle', { count: all.length })}</p>
-      </div>
+        <p className="mt-1 text-sm text-muted-foreground">{t('niche:discover.subtitle', { count: all.length })}</p>      </div>
 
       <div className="sticky top-14 z-20 -mx-4 space-y-3 bg-transparent px-4 py-2 md:-mx-8 md:top-0 md:px-8">
         <div className="flex gap-2">

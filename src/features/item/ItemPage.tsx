@@ -92,24 +92,30 @@ export function ItemPage() {
         <div className={cn('flex gap-4', top && 'flex-col')}>
           <ItemImage item={item} className={top ? 'w-full' : 'w-28 shrink-0 md:w-40'} />
           <div className="min-w-0 flex-1">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <h1 className="break-words text-2xl font-semibold md:text-3xl">{item.name}</h1>
-                <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
-              </div>
+            <h1 className="break-words text-2xl font-semibold md:text-3xl">{item.name}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              {user ? (
+                <div
+                  className="flex items-center gap-1.5"
+                  title={ratings.data.length ? t('item.community', { avg: avg.toFixed(1), count: ratings.data.length }) : t('item.noCommunity')}
+                >
+                  <Stars value={Math.round(avg * 2) / 2} />
+                  {ratings.data.length ? `${avg.toFixed(1)} (${ratings.data.length})` : '(0)'}
+                  <span className="sr-only">{ratings.data.length ? t('item.community', { avg: avg.toFixed(1), count: ratings.data.length }) : t('item.noCommunity')}</span>
+                </div>
+              ) : null}
               {item.bestScore ? (
-                <div className="shrink-0 rounded-xl bg-primary/10 px-3 py-2 text-center">
-                  <div className="font-display text-3xl font-semibold leading-none text-primary">{item.bestScore}</div>
-                  <div className="mt-1 text-[10px] uppercase tracking-wide text-muted-foreground">{t('niche:scores.badge')}</div>
+                <div
+                  className="flex items-baseline gap-1.5"
+                  title={[t('niche:scores.best'), Math.min(...item.scores) < item.bestScore && t('niche:scores.history', { count: item.scores.length, min: Math.min(...item.scores), max: item.bestScore })].filter(Boolean).join(' · ')}
+                >
+                  <span className="font-display font-semibold text-foreground">{item.bestScore}</span>
+                  {t('niche:scores.badge')}
+                  <span className="sr-only">{t('niche:scores.best')}</span>
                 </div>
               ) : null}
             </div>
-            {user && ratings.data.length ? (
-              <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-                <Stars value={Math.round(avg * 2) / 2} />
-                <span className="text-muted-foreground">{t('item.community', { avg: avg.toFixed(1), count: ratings.data.length })}</span>
-              </div>
-            ) : null}
           </div>
         </div>
 
@@ -161,7 +167,6 @@ export function ItemPage() {
               <Spec key={a.key} label={t(`niche:attr.${a.key}`)} value={text(a, item.attrs[a.key])} />
             ))}
         </div>
-        {item.scores.length > 1 ? <p className="mt-3 text-xs text-muted-foreground">{t('item.allScores', { scores: item.scores.join(', ') })}</p> : null}
       </section>
 
       <section>
