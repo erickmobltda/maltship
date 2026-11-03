@@ -20,7 +20,11 @@
     "hiddenNote": "Sua estante está oculta para os outros. Ative em Estante ou Configurações.",
     "statCount_one": "Whisky na estante",
     "statCount_other": "Whiskies na estante",
-    "searchPlaceholder": "Buscar na estante: nome, destilaria, país…"
+    "searchPlaceholder": "Buscar na estante: nome, destilaria, país…",
+    "popularity_one": "{{count}} pessoa tem na estante",
+    "popularity_other": "{{count}} pessoas têm na estante",
+    "popularityNone": "Ainda sem dados de estantes",
+    "sortMost": "Mais nas estantes"
   },
   "attr": {
     "distillery": "Destilaria",

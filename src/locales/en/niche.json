@@ -20,7 +20,11 @@
     "hiddenNote": "Your shelf is hidden from others. Turn it on in Shelf or Settings.",
     "statCount_one": "Whisky on the shelf",
     "statCount_other": "Whiskies on the shelf",
-    "searchPlaceholder": "Search your shelf: name, distillery, country…"
+    "searchPlaceholder": "Search your shelf: name, distillery, country…",
+    "popularity_one": "{{count}} person has it on their shelf",
+    "popularity_other": "{{count}} people have it on their shelves",
+    "popularityNone": "No shelf data yet",
+    "sortMost": "Most on shelves"
   },
   "attr": {
     "distillery": "Distillery",
