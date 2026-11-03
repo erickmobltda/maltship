@@ -24,7 +24,8 @@
     "popularity_one": "{{count}} pessoa tem na estante",
     "popularity_other": "{{count}} pessoas têm na estante",
     "popularityNone": "Ainda sem dados de estantes",
-    "sortMost": "Mais nas estantes"
+    "sortMost": "Mais nas estantes",
+    "activityChart": "Inclusões e exclusões na estante"
   },
   "attr": {
     "distillery": "Destilaria",
