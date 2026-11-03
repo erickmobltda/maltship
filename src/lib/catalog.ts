@@ -23,8 +23,20 @@ export interface CatalogFile {
   rows: unknown[][];
 }
 
-export const SORT_MODES = ['featured', 'name'] as const;
+export const SORT_MODES = ['featured', 'name', 'stars', 'owned', 'wished', 'mentions'] as const;
 export type SortMode = (typeof SORT_MODES)[number];
+/** Sort modes that need the popularity document. */
+export const STAT_SORTS: readonly SortMode[] = ['stars', 'owned', 'wished', 'mentions'];
+
+/** One item's entry in apps/<APP>/stats/items. A missing field means "no data", not zero. */
+export interface ItemStats {
+  owned?: number;
+  wished?: number;
+  ratings?: number;
+  starsSum?: number;
+  mentions?: number;
+}
+export type ItemStatsMap = Map<string, ItemStats>;
 
 export interface Filters {
   text: string;
@@ -76,12 +88,46 @@ export function search(items: Item[], f: Filters): Item[] {
 
 const byName = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
 
-/** featured: best score first, then items with an image, then by name. name: A to Z, ignoring accents and case. */
-export function sortResults(items: Item[], sort: SortMode = 'featured'): Item[] {
+const STAT_FIELDS = ['owned', 'wished', 'ratings', 'starsSum', 'mentions'] as const;
+
+/** Keeps only positive numbers, so anything else in the document reads as "no data". */
+export function decodeItemStats(doc: unknown): ItemStatsMap {
+  const items = (doc as { items?: unknown } | null)?.items;
+  const stats: ItemStatsMap = new Map();
+  if (!items || typeof items !== 'object') return stats;
+  for (const [id, raw] of Object.entries(items)) {
+    const entry = (raw ?? {}) as Record<string, unknown>;
+    const clean: ItemStats = {};
+    for (const f of STAT_FIELDS) {
+      const v = entry[f];
+      if (typeof v === 'number' && Number.isFinite(v) && v > 0) clean[f] = v;
+    }
+    stats.set(id, clean);
+  }
+  return stats;
+}
+
+export function avgStars(s: ItemStats | undefined): number | null {
+  return s?.ratings && s.starsSum ? s.starsSum / s.ratings : null;
+}
+
+/**
+ * featured: best score first, then items with an image, then by name. name: A to Z, ignoring accents and case.
+ * The others: highest number first, with items lacking it in featured order. Without stats they fall back to featured.
+ */
+export function sortResults(items: Item[], sort: SortMode = 'featured', stats?: ItemStatsMap | null): Item[] {
   if (sort === 'name') return [...items].sort((a, b) => byName.compare(a.name, b.name));
-  return [...items].sort(
+  const featured = [...items].sort(
     (a, b) => (b.bestScore ?? 0) - (a.bestScore ?? 0) || Number(!!b.image) - Number(!!a.image) || a.name.localeCompare(b.name),
   );
+  if (sort === 'featured' || !stats) return featured;
+  if (sort === 'stars') {
+    return featured.sort((a, b) => {
+      const [x, y] = [stats.get(a.id), stats.get(b.id)];
+      return (avgStars(y) ?? 0) - (avgStars(x) ?? 0) || (y?.ratings ?? 0) - (x?.ratings ?? 0);
+    });
+  }
+  return featured.sort((a, b) => (stats.get(b.id)?.[sort] ?? 0) - (stats.get(a.id)?.[sort] ?? 0));
 }
 
 /** Distinct values of an attribute, most common first; list attributes count each value once per item. */

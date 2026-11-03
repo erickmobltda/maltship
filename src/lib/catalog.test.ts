@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { NicheConfig } from './niche-types';
-import { decodeCatalog, facetValues, filtersFromParams, filtersToParams, search, sortResults, NO_FILTERS } from './catalog';
+import { avgStars, decodeCatalog, decodeItemStats, facetValues, filtersFromParams, filtersToParams, search, sortResults, NO_FILTERS } from './catalog';
 
 const config: NicheConfig = {
   niche: 'test',
@@ -65,6 +65,32 @@ describe('catalog', () => {
 
   it('sorts by best score, then image, then name', () => {
     expect(sortResults(items).map((i) => i.id)).toEqual(['x1', 'x3', 'x2']);
+  });
+
+  it('sorts by popularity, keeping featured order for items without the number', () => {
+    const stats = decodeItemStats({ items: { x2: { owned: 5, ratings: 2, starsSum: 8 }, x3: { owned: 9, ratings: 4, starsSum: 16 } } });
+    expect(sortResults(items, 'owned', stats).map((i) => i.id)).toEqual(['x3', 'x2', 'x1']);
+    expect(sortResults(items, 'stars', stats).map((i) => i.id)).toEqual(['x3', 'x2', 'x1']);
+    expect(sortResults(items, 'wished', stats).map((i) => i.id)).toEqual(['x1', 'x3', 'x2']);
+  });
+
+  it('falls back to featured order when a popularity sort has no stats', () => {
+    expect(sortResults(items, 'owned', null).map((i) => i.id)).toEqual(['x1', 'x3', 'x2']);
+  });
+
+  it('reads the stats document, treating anything missing or odd as no data', () => {
+    const stats = decodeItemStats({ items: { a: { owned: 3, wished: 0, mentions: 'many' }, b: null } });
+    expect(stats.get('a')).toEqual({ owned: 3 });
+    expect(stats.get('b')).toEqual({});
+    expect(decodeItemStats({}).size).toBe(0);
+    expect(decodeItemStats(undefined).size).toBe(0);
+  });
+
+  it('averages stars only when both numbers exist', () => {
+    expect(avgStars({ ratings: 4, starsSum: 18 })).toBe(4.5);
+    expect(avgStars({ starsSum: 18 })).toBeNull();
+    expect(avgStars({ ratings: 4 })).toBeNull();
+    expect(avgStars(undefined)).toBeNull();
   });
 
   it('sorts by name ignoring accents and case, with numbers in order', () => {

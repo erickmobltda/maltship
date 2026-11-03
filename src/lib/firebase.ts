@@ -29,6 +29,7 @@ export type ListName = 'owned' | 'wishlist';
 // Every Firestore path of the app is built here (collector-app-blueprint docs/03).
 // Private data: apps/<APP>/users/{uid}. Shared: profiles, handles, collections,
 // ratings (+ likes), follows. The demo keeps its ratings in users/{uid}/ratings.
+// stats/items is written by the server only; the app just reads it.
 const A = ['apps', niche.app] as const;
 
 export const paths = {
@@ -50,4 +51,5 @@ export const paths = {
   removed: (uid: string) => collection(db, ...A, 'users', uid, 'removed'),
   demoRatings: (uid: string) => collection(db, ...A, 'users', uid, 'ratings'),
   demoRating: (uid: string, itemId: string) => doc(db, ...A, 'users', uid, 'ratings', itemId),
+  itemStats: () => doc(db, ...A, 'stats', 'items'),
 };
