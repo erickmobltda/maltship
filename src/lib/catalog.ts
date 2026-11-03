@@ -10,6 +10,8 @@ export interface Item {
   /** Critic scores (empty when the niche has none). */
   scores: number[];
   image: number | null;
+  /** Background colour of an opaque image, to fill the space around it. */
+  imageBg: string | null;
   attrs: Record<string, AttrValue>;
   /** Lower-cased, accent-free text used by search. */
   haystack: string;
@@ -51,6 +53,7 @@ export function decodeCatalog(file: CatalogFile, config: NicheConfig = niche): I
       name,
       scores,
       image: (raw.image as number | null | undefined) ?? null,
+      imageBg: (raw.imageBg as string | null | undefined) ?? null,
       attrs,
       haystack: fold([name, ...searchable.map((k) => asText(attrs[k]))].join(' ')),
       bestScore: scores.length ? Math.max(...scores) : null,
