@@ -96,7 +96,7 @@ describe('catalog', () => {
   });
 
   it('reads the stats document, treating anything missing or odd as no data', () => {
-    const stats = decodeItemStats({ items: { a: { owned: 3, wished: 0, mentions: 'many' }, b: null } });
+    const stats = decodeItemStats({ items: { a: { owned: 3, wished: 0, ratings: 'many' }, b: null } });
     expect(stats.get('a')).toEqual({ owned: 3 });
     expect(stats.get('b')).toEqual({});
     expect(decodeItemStats({}).size).toBe(0);
